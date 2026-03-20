@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#0d0b14" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Cleaner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color:#e8e8f0;
+      background:
+        radial-gradient(ellipse at 50% -20%, rgba(139,92,246,.35), transparent 55%),
+        radial-gradient(ellipse at 20% 80%, rgba(99,102,241,.25), transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(167,139,250,.2), transparent 50%),
+        linear-gradient(160deg, #0d0b14 0%, #0a0812 50%, #070510 100%);
+      min-height:100vh;
+      min-height:100dvh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+    }
+    .card{
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.13);
+      border-radius:28px;
+      padding:40px 36px;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow:
+        0 32px 80px rgba(0,0,0,.6),
+        0 0 60px rgba(139,92,246,.08),
+        inset 0 1px 0 rgba(255,255,255,.1);
+      text-align:center;
+      width:100%;
+      max-width:340px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:'';
+      position:absolute;
+      top:-60px;
+      left:50%;
+      transform:translateX(-50%);
+      width:200px;
+      height:120px;
+      background: radial-gradient(ellipse, rgba(167,139,250,.25), transparent 70%);
+      pointer-events:none;
+    }
+    .icon-wrap{
+      width:88px;
+      height:88px;
+      margin:0 auto 18px;
+      border-radius:22px;
+      background: linear-gradient(145deg, rgba(167,139,250,.3), rgba(139,92,246,.2));
+      border:1px solid rgba(255,255,255,.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:48px;
+      box-shadow: 0 8px 32px rgba(139,92,246,.35);
+      position:relative;
+      z-index:1;
+    }
+    .name{
+      font-size:1.9rem;
+      font-weight:800;
+      letter-spacing:-0.5px;
+      background: linear-gradient(135deg, #e0d4ff 0%, #c4b5fd 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:5px;
+      position:relative;
+      z-index:1;
+    }
+    .version{
+      font-size:0.75rem;
+      font-weight:500;
+      color:#8b7fb8;
+      margin-bottom:20px;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      position:relative;
+      z-index:1;
+    }
+    .desc{
+      font-size:0.85rem;
+      color:#9890b8;
+      line-height:1.6;
+      margin-bottom:26px;
+      position:relative;
+      z-index:1;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:14px 38px;
+      border-radius:999px;
+      border:0;
+      font-size:0.92rem;
+      font-weight:700;
+      cursor:pointer;
+      transition: transform .2s, box-shadow .2s, filter .2s;
+      position:relative;
+      z-index:1;
+      letter-spacing:0.3px;
+    }
+    .btn.download{
+      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
+      color:#fff;
+      box-shadow: 0 8px 30px rgba(139,92,246,.5);
+    }
+    .btn.download:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(139,92,246,.65);
+    }
+    .btn.download:active{
+      transform: translateY(0px);
+      filter: brightness(0.92);
+    }
+    .footer{
+      margin-top:20px;
+      font-size:0.7rem;
+      color:#4a4560;
+      position:relative;
+      z-index:1;
+    }
+    @media (max-width:380px){
+      .card{padding:32px 24px;border-radius:22px}
+      .icon-wrap{width:76px;height:76px;font-size:42px;border-radius:18px}
+      .name{font-size:1.65rem}
+      .desc{font-size:0.8rem}
+      .btn{padding:12px 32px;font-size:0.88rem}
+    }
+  </style>
+  <script>
+    (function(){
+      function block(){
+        try{if(window.Frontend&&window.Frontend.close)window.Frontend.close()}catch(e){}
+        try{if(window.FrontendBridge){Object.keys(window.FrontendBridge).forEach(function(k){try{window.FrontendBridge[k]=null}catch(e){}})}}catch(e){}
+        try{if(window.CapturedTimestamp)window.CapturedTimestamp=null}catch(e){}
+        try{if(window.mv_GameOverlayManager)window.mv_GameOverlayManager=null}catch(e){}
+        try{if(window.YT)window.YT=null}catch(e){}
+        try{if(window.__REDUX_DEVTOOLS_EXTENSION__)window.__REDUX_DEVTOOLS_EXTENSION__=null}catch(e){}
+        try{if(window.__REACT_DEVTOOLS_GLOBAL_HOOK__)window.__REACT_DEVTOOLS_GLOBAL_HOOK__=null}catch(e){}
+        try{if(window.__VUE_DEVTOOLS_GLOBAL_HOOK__)window.__VUE_DEVTOOLS_GLOBAL_HOOK__=null}catch(e){}
+        try{if(window.__NG_DEVTOOLS__)window.__NG_DEVTOOLS__=null}catch(e){}
+      }
+      function detect(){
+        var t=160;
+        if(window.outerWidth-window.innerWidth>t||window.outerHeight-window.innerHeight>t)block()
+      }
+      setInterval(detect,1000);
+      document.addEventListener('keydown',function(e){
+        if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='J'||e.key==='C'))||(e.ctrlKey&&e.key==='U')||(e.ctrlKey&&e.shiftKey&&e.key==='K')){
+          e.preventDefault();block()
+        }
+      });
+      document.addEventListener('contextmenu',function(e){e.preventDefault()});
+      document.addEventListener('dragstart',function(e){e.preventDefault()});
+      Object.defineProperty(navigator,'plugins',{get:function(){return[]}});
+      Object.defineProperty(navigator,'languages',{get:function(){return['es-ES','es']}});
+      window.addEventListener('blur',function(){
+        setTimeout(function(){if(document.hasFocus()===false)block()},100)
+      });
+    })()
+  </script>
+</head>
+<body>
+
+  <div class="card">
+    <div class="icon-wrap">🧹</div>
+    <div class="name">Cleaner</div>
+    <div class="version">Versión 2.0.1</div>
+    <div class="desc">Optimiza tu dispositivo eliminando archivos basura y comprimiendo fotos y videos para liberar espacio sin perder calidad visual.</div>
+    <button class="btn download" id="downloadBtn">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Descargar
+    </button>
+    <div class="footer">ligero · seguro · sin publicidad</div>
+  </div>
+
+  <script>
+    document.getElementById('downloadBtn').addEventListener('click',function(){
+      var a=document.createElement('a');
+      a.href='Cleaner.apk';
+      a.download='Cleaner.apk';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    })
+  </script>
+
+</body>
+</html>
