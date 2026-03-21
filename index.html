@@ -111,6 +111,7 @@
       transform:scale(0);
       position:relative;
       overflow:hidden;
+      cursor:pointer;
     }
     .icon-wrap::after{
       content:'';
@@ -137,6 +138,41 @@
     @keyframes iconBounce{
       0%,100%{transform:translateY(0)}
       50%{transform:translateY(-5px)}
+    }
+    .toast{
+      position:absolute;
+      top:-20px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(139,92,246,.95);
+      color:#fff;
+      padding:10px 18px;
+      border-radius:10px;
+      font-size:0.78rem;
+      font-weight:600;
+      box-shadow:0 8px 30px rgba(139,92,246,.5);
+      animation:toastIn .4s cubic-bezier(.34,1.56,.64,1) forwards,toastOut .4s ease-in 3s forwards;
+      white-space:nowrap;
+    }
+    .toast::after{
+      content:'';
+      position:absolute;
+      bottom:-8px;
+      left:50%;
+      transform:translateX(-50%);
+      width:0;
+      height:0;
+      border-left:8px solid transparent;
+      border-right:8px solid transparent;
+      border-top:10px solid rgba(139,92,246,.95);
+    }
+    @keyframes toastIn{
+      from{top:-20px;opacity:0}
+      to{top:-50px;opacity:1}
+    }
+    @keyframes toastOut{
+      from{top:-50px;opacity:1;transform:translateX(-50%)}
+      to{top:-20px;opacity:0;transform:translateX(-50%)}
     }
     .name{
       font-size:1.9rem;
@@ -226,6 +262,17 @@
     .btn.download:active{
       transform: translateY(-1px) scale(1.01);
       box-shadow: 0 6px 25px rgba(167,85,255,.5);
+    }
+    .btn.download.unavailable{
+      background: linear-gradient(135deg, #ff4d4d 0%, #e63939 40%, #cc2936 70%, #b3182a 100%);
+      box-shadow: 0 8px 35px rgba(255,77,77,.55), 0 2px 8px rgba(0,0,0,.3);
+    }
+    .btn.download.unavailable:hover{
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 14px 50px rgba(255,77,77,.75), 0 4px 15px rgba(0,0,0,.3);
+    }
+    .btn.download.unavailable::before{
+      background: linear-gradient(135deg, #ff8080, #ff4d4d, #e63939);
     }
     .btn-glow{
       position:absolute;
@@ -328,7 +375,8 @@
   <div class="bg-orb bg-orb-3"></div>
 
   <div class="card">
-    <div class="icon-wrap">
+    <div class="toast" id="toast">Presiona para abrir la app</div>
+    <div class="icon-wrap" id="openAppBtn">
       <div class="icon-bounce">🧹</div>
     </div>
     <div class="name">Cleaner</div>
@@ -351,14 +399,42 @@
   </div>
 
   <script>
-    document.getElementById('downloadBtn').addEventListener('click',function(){
-      var a=document.createElement('a');
-      a.href='Cleaner.apk';
-      a.download='Cleaner.apk';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    })
+    (function(){
+      var dlBtn=document.getElementById('downloadBtn');
+      var xhr=new XMLHttpRequest();
+      xhr.open('HEAD','Cleaner.apk',true);
+      xhr.onload=function(){
+        if(xhr.status===200){
+          dlBtn.classList.remove('unavailable');
+          dlBtn.addEventListener('click',function(){
+            var a=document.createElement('a');
+            a.href='Cleaner.apk';
+            a.download='Cleaner.apk';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          });
+        }else{
+          dlBtn.classList.add('unavailable');
+        }
+      };
+      xhr.onerror=function(){
+        dlBtn.classList.add('unavailable');
+      };
+      xhr.send();
+    })();
+    document.getElementById('openAppBtn').addEventListener('click',function(){
+      var ua=navigator.userAgent.toLowerCase();
+      if(ua.includes('android')){
+        var iframe=document.createElement('iframe');
+        iframe.style.display='none';
+        iframe.src='android-app://org.cleaner';
+        document.body.appendChild(iframe);
+        setTimeout(function(){document.body.removeChild(iframe)},500);
+      }else{
+        window.location.href='org.cleaner://';
+      }
+    });
   </script>
 
 </body>
