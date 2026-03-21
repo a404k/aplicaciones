@@ -471,7 +471,7 @@
       pulse.classList.add('active');
       var ua=navigator.userAgent.toLowerCase();
       if(ua.includes('android')){
-        window.location.href='android-app://org.cleaner';
+        window.location.href='intent://org.cleaner#Intent;scheme=package;package=org.cleaner;end';
       }else{
         window.location.href='org.cleaner://';
       }
