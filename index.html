@@ -112,7 +112,31 @@
       position:relative;
       overflow:hidden;
       cursor:pointer;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
     }
+    .icon-wrap:hover{
+      transform:scale(1.08);
+      box-shadow: 0 12px 50px rgba(167,85,255,.7);
+    }
+    .icon-wrap:active{
+      transform:scale(0.95);
+      box-shadow: 0 4px 20px rgba(167,85,255,.4);
+    }
+    .icon-wrap::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:22px;
+      padding:2px;
+      background: linear-gradient(135deg, rgba(200,160,255,.5), rgba(167,85,255,.3), rgba(139,92,246,.4));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity:0;
+      transition:opacity .3s;
+    }
+    .icon-wrap:hover::before{opacity:1}
     .icon-wrap::after{
       content:'';
       position:absolute;
@@ -138,6 +162,22 @@
     @keyframes iconBounce{
       0%,100%{transform:translateY(0)}
       50%{transform:translateY(-5px)}
+    }
+    .icon-pulse{
+      position:absolute;
+      width:100%;
+      height:100%;
+      border-radius:22px;
+      background:rgba(167,85,255,.4);
+      opacity:0;
+      pointer-events:none;
+    }
+    .icon-pulse.active{
+      animation:iconPulse .6s ease-out forwards;
+    }
+    @keyframes iconPulse{
+      0%{transform:scale(1);opacity:.6}
+      100%{transform:scale(1.8);opacity:0}
     }
     .toast{
       position:absolute;
@@ -377,6 +417,7 @@
   <div class="card">
     <div class="toast" id="toast">Presiona para abrir la app</div>
     <div class="icon-wrap" id="openAppBtn">
+      <div class="icon-pulse" id="iconPulse"></div>
       <div class="icon-bounce">🧹</div>
     </div>
     <div class="name">Cleaner</div>
@@ -424,13 +465,13 @@
       xhr.send();
     })();
     document.getElementById('openAppBtn').addEventListener('click',function(){
+      var pulse=document.getElementById('iconPulse');
+      pulse.classList.remove('active');
+      void pulse.offsetWidth;
+      pulse.classList.add('active');
       var ua=navigator.userAgent.toLowerCase();
       if(ua.includes('android')){
-        var iframe=document.createElement('iframe');
-        iframe.style.display='none';
-        iframe.src='android-app://org.cleaner';
-        document.body.appendChild(iframe);
-        setTimeout(function(){document.body.removeChild(iframe)},500);
+        window.location.href='android-app://org.cleaner';
       }else{
         window.location.href='org.cleaner://';
       }
