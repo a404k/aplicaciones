@@ -4,13 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <meta name="theme-color" content="#0d0b14" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Cleaner</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
-      font-family: Inter, system-ui, -apple-system, sans-serif;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       color:#e8e8f0;
       background:
         radial-gradient(ellipse at 50% -15%, rgba(167,85,255,.5), transparent 50%),
@@ -20,85 +23,455 @@
       min-height:100vh;
       min-height:100dvh;
       display:flex;
-      flex-direction:column;
       align-items:center;
-      padding:20px;
-      overflow-x:hidden;
-      overflow-y:auto;
+      justify-content:center;
+      padding:16px;
+      overflow:hidden;
     }
-    .bg-orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:orbFloat 8s ease-in-out infinite}
-    .bg-orb-1{width:300px;height:300px;top:-80px;left:50%;transform:translateX(-50%);background:radial-gradient(circle, rgba(167,85,255,.45), transparent 70%)}
-    .bg-orb-2{width:250px;height:250px;bottom:-60px;left:10%;background:radial-gradient(circle, rgba(130,70,255,.35), transparent 70%);animation-delay:-3s}
-    .bg-orb-3{width:220px;height:220px;bottom:-40px;right:5%;background:radial-gradient(circle, rgba(200,140,255,.3), transparent 70%);animation-delay:-5s}
-    @keyframes orbFloat{0%,100%{transform:translateX(-50%) translateY(0)}33%{transform:translateX(-50%) translateY(-15px)}66%{transform:translateX(-50%) translateY(10px)}}
-    .platform-switch{display:flex;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:5px;margin:20px 0 30px;position:relative;z-index:10}
-    .platform-btn{padding:10px 24px;border:none;border-radius:12px;font-size:0.88rem;font-weight:600;cursor:pointer;background:transparent;color:#8b7fa8;position:relative;z-index:1;display:flex;align-items:center;gap:8px;transition:color .3s}
-    .platform-btn.active{color:#fff}
-    .platform-btn .bg{position:absolute;inset:0;border-radius:12px;background:linear-gradient(135deg, #9d5cff, #8b4cf6, #7c3aed);box-shadow:0 4px 20px rgba(139,92,246,.5);opacity:0;transform:scale(.9);transition:transform .3s,opacity .3s}
-    .platform-btn.active .bg{opacity:1;transform:scale(1)}
-    .platform-btn span{position:relative;z-index:1}
-    .cards-container{display:flex;flex-direction:column;gap:20px;width:100%;max-width:340px;z-index:1}
-    .cards-container.windows{flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:flex-start;max-width:760px}
-    .card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:28px;padding:40px 36px;backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);box-shadow:0 32px 80px rgba(0,0,0,.7),0 0 80px rgba(139,92,246,.12),inset 0 1px 0 rgba(255,255,255,.12);text-align:center;width:100%;position:relative;opacity:0;transform:translateY(30px);animation:cardIn .6s cubic-bezier(.34,1.56,.64,1) forwards}
-    .cards-container.windows .card{max-width:320px;flex:1 1 280px}
-    @keyframes cardIn{to{opacity:1;transform:translateY(0)}}
-    .card::before{content:'';position:absolute;inset:-1px;border-radius:29px;background:linear-gradient(135deg, rgba(200,160,255,.3), rgba(139,92,246,.1), rgba(100,60,220,.2));z-index:-1;opacity:0;transition:opacity .5s}
+    .bg-orb{
+      position:fixed;
+      border-radius:50%;
+      filter:blur(80px);
+      pointer-events:none;
+      z-index:0;
+      animation:orbFloat 8s ease-in-out infinite;
+    }
+    .bg-orb-1{
+      width:300px;height:300px;
+      top:-80px;left:50%;
+      transform:translateX(-50%);
+      background:radial-gradient(circle, rgba(167,85,255,.45), transparent 70%);
+      animation-delay:0s;
+    }
+    .bg-orb-2{
+      width:250px;height:250px;
+      bottom:-60px;left:10%;
+      background:radial-gradient(circle, rgba(130,70,255,.35), transparent 70%);
+      animation-delay:-3s;
+    }
+    .bg-orb-3{
+      width:220px;height:220px;
+      bottom:-40px;right:5%;
+      background:radial-gradient(circle, rgba(200,140,255,.3), transparent 70%);
+      animation-delay:-5s;
+    }
+    @keyframes orbFloat{
+      0%,100%{transform:translateX(-50%) translateY(0px) scale(1)}
+      33%{transform:translateX(-50%) translateY(-15px) scale(1.05)}
+      66%{transform:translateX(-50%) translateY(10px) scale(0.97)}
+    }
+    .card{
+      background: rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:28px;
+      padding:40px 36px;
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      box-shadow:
+        0 32px 80px rgba(0,0,0,.7),
+        0 0 80px rgba(139,92,246,.12),
+        inset 0 1px 0 rgba(255,255,255,.12);
+      text-align:center;
+      width:100%;
+      max-width:340px;
+      position:relative;
+      z-index:1;
+      animation:cardEntrance .8s cubic-bezier(.34,1.56,.64,1) forwards;
+      opacity:0;
+      transform:translateY(30px) scale(.95);
+    }
+    .card::before{
+      content:'';
+      position:absolute;
+      top:-1px;left:-1px;right:-1px;bottom:-1px;
+      border-radius:29px;
+      background: linear-gradient(135deg, rgba(200,160,255,.3), rgba(139,92,246,.1), rgba(100,60,220,.2));
+      z-index:-1;
+      opacity:0;
+      transition:opacity .5s;
+    }
     .card:hover::before{opacity:1}
-    .icon-wrap{width:88px;height:88px;margin:0 auto 18px;border-radius:22px;background:linear-gradient(145deg, rgba(200,160,255,.35), rgba(167,100,255,.25));border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:48px;box-shadow:0 8px 40px rgba(167,85,255,.5);position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s}
-    .icon-wrap:hover{transform:scale(1.08);box-shadow:0 12px 50px rgba(167,85,255,.7)}
-    .icon-wrap:active{transform:scale(.95)}
-    .icon-wrap::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg, transparent 40%, rgba(255,255,255,.15) 50%, transparent 60%);animation:iconShine 3s ease-in-out infinite}
-    @keyframes iconShine{0%{transform:translateX(-100%) rotate(45deg)}50%,100%{transform:translateX(100%) rotate(45deg)}}
-    .name{font-size:1.9rem;font-weight:800;letter-spacing:-0.5px;background:linear-gradient(135deg,#f0e8ff,#d8c8ff,#c4a8ff,#dcc8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:5px}
-    .version{font-size:0.75rem;font-weight:500;color:#b8a0d8;margin-bottom:20px;letter-spacing:2px;text-transform:uppercase}
-    .desc{font-size:0.85rem;color:#a090c8;line-height:1.6;margin-bottom:26px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 38px;border-radius:999px;border:0;font-size:0.92rem;font-weight:700;cursor:pointer;position:relative;z-index:1;letter-spacing:0.3px;overflow:hidden}
-    .btn::before{content:'';position:absolute;inset:0;border-radius:999px;padding:2px;background:linear-gradient(135deg,#c4a8ff,#8b5cf6,#7c3aed);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .3s}
-    .btn.download{background:linear-gradient(135deg,#9d5cff,#8b4cf6,#7c3aed,#6d28d9);color:#fff;box-shadow:0 8px 35px rgba(167,85,255,.55),0 2px 8px rgba(0,0,0,.3);transition:transform .3s,box-shadow .3s}
-    .btn.download:hover{transform:translateY(-4px);box-shadow:0 14px 50px rgba(167,85,255,.75),0 4px 15px rgba(0,0,0,.3)}
+    @keyframes cardEntrance{
+      to{opacity:1;transform:translateY(0) scale(1)}
+    }
+    .icon-wrap{
+      width:88px;
+      height:88px;
+      margin:0 auto 18px;
+      border-radius:22px;
+      background: linear-gradient(145deg, rgba(200,160,255,.35), rgba(167,100,255,.25));
+      border:1px solid rgba(255,255,255,.2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:48px;
+      box-shadow: 0 8px 40px rgba(167,85,255,.5);
+      animation:iconEntrance 1s cubic-bezier(.34,1.56,.64,1) .2s forwards;
+      opacity:0;
+      transform:scale(0);
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
+    }
+    .icon-wrap:hover{
+      transform:scale(1.08);
+      box-shadow: 0 12px 50px rgba(167,85,255,.7);
+    }
+    .icon-wrap:active{
+      transform:scale(0.95);
+      box-shadow: 0 4px 20px rgba(167,85,255,.4);
+    }
+    .icon-wrap::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:22px;
+      padding:2px;
+      background: linear-gradient(135deg, rgba(200,160,255,.5), rgba(167,85,255,.3), rgba(139,92,246,.4));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity:0;
+      transition:opacity .3s;
+    }
+    .icon-wrap:hover::before{opacity:1}
+    .icon-wrap::after{
+      content:'';
+      position:absolute;
+      top:-50%;
+      left:-50%;
+      width:200%;
+      height:200%;
+      background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,.15) 50%, transparent 60%);
+      animation:iconShine 3s ease-in-out infinite;
+    }
+    @keyframes iconEntrance{
+      to{opacity:1;transform:scale(1)}
+    }
+    @keyframes iconShine{
+      0%{transform:translateX(-100%) rotate(45deg)}
+      50%,100%{transform:translateX(100%) rotate(45deg)}
+    }
+    .icon-bounce{
+      animation:iconBounce 2.5s ease-in-out 1.5s infinite;
+      position:relative;
+      z-index:1;
+    }
+    @keyframes iconBounce{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-5px)}
+    }
+    .icon-pulse{
+      position:absolute;
+      width:100%;
+      height:100%;
+      border-radius:22px;
+      background:rgba(167,85,255,.4);
+      opacity:0;
+      pointer-events:none;
+    }
+    .icon-pulse.active{
+      animation:iconPulse .6s ease-out forwards;
+    }
+    @keyframes iconPulse{
+      0%{transform:scale(1);opacity:.6}
+      100%{transform:scale(1.8);opacity:0}
+    }
+    .toast{
+      position:absolute;
+      top:-20px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(139,92,246,.95);
+      color:#fff;
+      padding:10px 18px;
+      border-radius:10px;
+      font-size:0.78rem;
+      font-weight:600;
+      box-shadow:0 8px 30px rgba(139,92,246,.5);
+      animation:toastIn .4s cubic-bezier(.34,1.56,.64,1) forwards,toastOut .4s ease-in 3s forwards;
+      white-space:nowrap;
+    }
+    .toast::after{
+      content:'';
+      position:absolute;
+      bottom:-8px;
+      left:50%;
+      transform:translateX(-50%);
+      width:0;
+      height:0;
+      border-left:8px solid transparent;
+      border-right:8px solid transparent;
+      border-top:10px solid rgba(139,92,246,.95);
+    }
+    @keyframes toastIn{
+      from{top:-20px;opacity:0}
+      to{top:-50px;opacity:1}
+    }
+    @keyframes toastOut{
+      from{top:-50px;opacity:1;transform:translateX(-50%)}
+      to{top:-20px;opacity:0;transform:translateX(-50%)}
+    }
+    .name{
+      font-size:1.9rem;
+      font-weight:800;
+      letter-spacing:-0.5px;
+      background: linear-gradient(135deg, #f0e8ff 0%, #d8c8ff 30%, #c4a8ff 60%, #dcc8ff 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:5px;
+      animation:nameEntrance .8s ease-out .4s forwards;
+      opacity:0;
+      transform:translateY(10px);
+    }
+    @keyframes nameEntrance{
+      to{opacity:1;transform:translateY(0)}
+    }
+    .version{
+      font-size:0.75rem;
+      font-weight:500;
+      color:#b8a0d8;
+      margin-bottom:20px;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      animation:versionEntrance .8s ease-out .5s forwards;
+      opacity:0;
+    }
+    @keyframes versionEntrance{
+      to{opacity:1}
+    }
+    .desc{
+      font-size:0.85rem;
+      color:#a090c8;
+      line-height:1.6;
+      margin-bottom:26px;
+      animation:descEntrance .8s ease-out .6s forwards;
+      opacity:0;
+      transform:translateY(8px);
+    }
+    @keyframes descEntrance{
+      to{opacity:1;transform:translateY(0)}
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:14px 38px;
+      border-radius:999px;
+      border:0;
+      font-size:0.92rem;
+      font-weight:700;
+      cursor:pointer;
+      position:relative;
+      z-index:1;
+      letter-spacing:0.3px;
+      animation:btnEntrance .8s cubic-bezier(.34,1.56,.64,1) .7s forwards;
+      opacity:0;
+      transform:translateY(15px) scale(.9);
+      overflow:hidden;
+    }
+    .btn::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:999px;
+      padding:2px;
+      background: linear-gradient(135deg, #c4a8ff, #8b5cf6, #7c3aed);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity:0;
+      transition:opacity .3s;
+    }
+    .btn.download{
+      background: linear-gradient(135deg, #9d5cff 0%, #8b4cf6 40%, #7c3aed 70%, #6d28d9 100%);
+      color:#fff;
+      box-shadow: 0 8px 35px rgba(167,85,255,.55), 0 2px 8px rgba(0,0,0,.3);
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
+    }
+    .btn.download:hover{
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 14px 50px rgba(167,85,255,.75), 0 4px 15px rgba(0,0,0,.3);
+    }
     .btn.download:hover::before{opacity:1}
-    .btn.download:active{transform:translateY(-1px)}
-    .btn.download.unavailable{background:linear-gradient(135deg,#ff4d4d,#e63939,#cc2936,#b3182a);box-shadow:0 8px 35px rgba(255,77,77,.55)}
-    .btn-glow{position:absolute;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle, rgba(167,85,255,.4), transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:-1;animation:btnGlow 2s ease-in-out infinite}
-    @keyframes btnGlow{0%,100%{opacity:.5}50%{opacity:1}}
-    .footer{margin-top:20px;font-size:0.7rem;color:#5a4e78}
-    .footer span{color:#9b7fd0;font-weight:600}
-    .dots{display:inline-flex;gap:5px;margin-left:4px;vertical-align:middle}
-    .dot{width:4px;height:4px;border-radius:50%;background:#7b5fbf;animation:dotPulse 1.5s ease-in-out infinite}
+    .btn.download:active{
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 6px 25px rgba(167,85,255,.5);
+    }
+    .btn.download.unavailable{
+      background: linear-gradient(135deg, #ff4d4d 0%, #e63939 40%, #cc2936 70%, #b3182a 100%);
+      box-shadow: 0 8px 35px rgba(255,77,77,.55), 0 2px 8px rgba(0,0,0,.3);
+    }
+    .btn.download.unavailable:hover{
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 14px 50px rgba(255,77,77,.75), 0 4px 15px rgba(0,0,0,.3);
+    }
+    .btn.download.unavailable::before{
+      background: linear-gradient(135deg, #ff8080, #ff4d4d, #e63939);
+    }
+    .btn-glow{
+      position:absolute;
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      background: radial-gradient(circle, rgba(167,85,255,.4), transparent 70%);
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      pointer-events:none;
+      z-index:-1;
+      animation:btnGlow 2s ease-in-out infinite;
+    }
+    @keyframes btnGlow{
+      0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}
+      50%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}
+    }
+    @keyframes btnEntrance{
+      to{opacity:1;transform:translateY(0) scale(1)}
+    }
+    .footer{
+      margin-top:20px;
+      font-size:0.7rem;
+      color:#5a4e78;
+      animation:footerEntrance .8s ease-out .9s forwards;
+      opacity:0;
+    }
+    @keyframes footerEntrance{
+      to{opacity:1}
+    }
+    .footer span{
+      color:#9b7fd0;
+      font-weight:600;
+    }
+    .dots{
+      display:inline-flex;
+      gap:5px;
+      margin-left:4px;
+      vertical-align:middle;
+    }
+    .dot{
+      width:4px;
+      height:4px;
+      border-radius:50%;
+      background:#7b5fbf;
+      animation:dotPulse 1.5s ease-in-out infinite;
+    }
     .dot:nth-child(2){animation-delay:.2s}
     .dot:nth-child(3){animation-delay:.4s}
-    @keyframes dotPulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
-    @media (max-width:380px){.card{padding:32px 24px;border-radius:22px}.icon-wrap{width:76px;height:76px;font-size:42px}.name{font-size:1.65rem}.desc{font-size:0.8rem}.btn{padding:12px 32px;font-size:0.88rem}}
-    @media (max-width:700px){.cards-container.windows{flex-direction:column;align-items:center}.cards-container.windows .card{max-width:340px}}
+    @keyframes dotPulse{
+      0%,100%{opacity:.4;transform:scale(1)}
+      50%{opacity:1;transform:scale(1.3)}
+    }
+    @media (max-width:380px){
+      .card{padding:32px 24px;border-radius:22px}
+      .icon-wrap{width:76px;height:76px;font-size:42px;border-radius:18px}
+      .name{font-size:1.65rem}
+      .desc{font-size:0.8rem}
+      .btn{padding:12px 32px;font-size:0.88rem}
+    }
   </style>
+  <script>
+    (function(){
+      function block(){
+        try{if(window.Frontend&&window.Frontend.close)window.Frontend.close()}catch(e){}
+        try{if(window.FrontendBridge){Object.keys(window.FrontendBridge).forEach(function(k){try{window.FrontendBridge[k]=null}catch(e){}})}}catch(e){}
+        try{if(window.CapturedTimestamp)window.CapturedTimestamp=null}catch(e){}
+        try{if(window.mv_GameOverlayManager)window.mv_GameOverlayManager=null}catch(e){}
+        try{if(window.YT)window.YT=null}catch(e){}
+        try{if(window.__REDUX_DEVTOOLS_EXTENSION__)window.__REDUX_DEVTOOLS_EXTENSION__=null}catch(e){}
+        try{if(window.__REACT_DEVTOOLS_GLOBAL_HOOK__)window.__REACT_DEVTOOLS_GLOBAL_HOOK__=null}catch(e){}
+        try{if(window.__VUE_DEVTOOLS_GLOBAL_HOOK__)window.__VUE_DEVTOOLS_GLOBAL_HOOK__=null}catch(e){}
+        try{if(window.__NG_DEVTOOLS__)window.__NG_DEVTOOLS__=null}catch(e){}
+      }
+      function detect(){
+        var t=160;
+        if(window.outerWidth-window.innerWidth>t||window.outerHeight-window.innerHeight>t)block()
+      }
+      setInterval(detect,1000);
+      document.addEventListener('keydown',function(e){
+        if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='J'||e.key==='C'))||(e.ctrlKey&&e.key==='U')||(e.ctrlKey&&e.shiftKey&&e.key==='K')){
+          e.preventDefault();block()
+        }
+      });
+      document.addEventListener('contextmenu',function(e){e.preventDefault()});
+      document.addEventListener('dragstart',function(e){e.preventDefault()});
+      Object.defineProperty(navigator,'plugins',{get:function(){return[]}});
+      Object.defineProperty(navigator,'languages',{get:function(){return['es-ES','es']}});
+      window.addEventListener('blur',function(){
+        setTimeout(function(){if(document.hasFocus()===false)block()},100)
+      });
+    })()
+  </script>
 </head>
 <body>
+
   <div class="bg-orb bg-orb-1"></div>
   <div class="bg-orb bg-orb-2"></div>
   <div class="bg-orb bg-orb-3"></div>
 
-  <div class="platform-switch">
-    <button class="platform-btn active" data-platform="android" onclick="switchP('android')"><span class="bg"></span><span>🤖 Android</span></button>
-    <button class="platform-btn" data-platform="windows" onclick="switchP('windows')"><span class="bg"></span><span>💻 Windows</span></button>
+  <div class="card">
+    <div class="toast" id="toast">Presiona para abrir la app</div>
+    <div class="icon-wrap" id="openAppBtn">
+      <div class="icon-pulse" id="iconPulse"></div>
+      <div class="icon-bounce">🧹</div>
+    </div>
+    <div class="name">Cleaner</div>
+    <div class="version">Versión 2.0.1</div>
+    <div class="desc">Optimiza tu dispositivo eliminando archivos basura y comprimiendo fotos y videos para liberar espacio sin perder calidad visual.</div>
+    <button class="btn download" id="downloadBtn">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Descargar
+      <div class="btn-glow"></div>
+    </button>
+    <div class="footer">
+      <span>ligero</span><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+      <span>seguro</span><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+      <span>sin publicidad</span>
+    </div>
   </div>
 
-  <div class="cards-container" id="cardsContainer"></div>
-
   <script>
-    var apps={
-      android:[{name:'Cleaner',version:'2.0.1',icon:'🧹',desc:'Optimiza tu dispositivo eliminando archivos basura y comprimiendo fotos y videos para liberar espacio sin perder calidad visual.',file:'https://github.com/a404k/aplicaciones/releases/download/untagged-8b30d95f4763796c799d/Cleaner.apk'}],
-      windows:[
-        {name:'AutoClick',version:'1.0.0',icon:'🖱️',desc:'Automatiza tus clics con funciones avanzadas de macros y temporizadores para simplificar tareas repetitivas.',file:'https://github.com/a404k/aplicaciones/releases/download/untagged-8b30d95f4763796c799d/autoclick.exe'},
-        {name:'Limpiador',version:'1.2.0',icon:'🧹',desc:'Limpia tu PC eliminando archivos temporales, caché y otros elementos innecesarios para mejorar el rendimiento.',file:'https://github.com/a404k/aplicaciones/releases/download/untagged-8b30d95f4763796c799d/Limpiador.exe'}
-      ]
-    };
-    var currPlat='android';
-    function detect(){var ua=navigator.userAgent||navigator.vendor||window.opera;if(/android/i.test(ua))return'android';if(/win/i.test(ua)||/mac/i.test(ua)||/linux/i.test(ua))return'windows';return'android'}
-    function switchP(p){if(p===currPlat)return;currPlat=p;document.querySelectorAll('.platform-btn').forEach(function(b){b.classList.toggle('active',b.dataset.platform===p)});render()}
-    function render(){var c=document.getElementById('cardsContainer');c.className='cards-container'+(currPlat==='windows'?' windows':'');c.innerHTML='';var list=apps[currPlat]||[];list.forEach(function(a,i){var card=document.createElement('div');card.className='card';card.style.animationDelay=(i*0.1)+'s';card.innerHTML='<div class="icon-wrap">'+a.icon+'</div><div class="name">'+a.name+'</div><div class="version">Versión '+a.version+'</div><div class="desc">'+a.desc+'</div><button class="btn download" onclick="dl(\''+a.file+'\')"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Descargar<div class="btn-glow"></div></button><div class="footer"><span>ligero</span><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span><span>seguro</span><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span><span>sin publicidad</span></div>';c.appendChild(card)})}
-    function dl(f){var a=document.createElement('a');a.href=f;a.download=f.split('/').pop();document.body.appendChild(a);a.click();document.body.removeChild(a)}
-    (function(){document.addEventListener('keydown',function(e){if(e.key==='F12'||e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='J'||e.key==='C')||e.ctrlKey&&e.key==='U'){e.preventDefault()}});document.addEventListener('contextmenu',function(e){e.preventDefault()})})();
-    var initPlat=detect();currPlat=initPlat;document.querySelectorAll('.platform-btn').forEach(function(b){b.classList.toggle('active',b.dataset.platform===initPlat)});render();
+    (function(){
+      var dlBtn=document.getElementById('downloadBtn');
+      var xhr=new XMLHttpRequest();
+      xhr.open('HEAD','Cleaner.apk',true);
+      xhr.onload=function(){
+        if(xhr.status===200){
+          dlBtn.classList.remove('unavailable');
+          dlBtn.addEventListener('click',function(){
+            var a=document.createElement('a');
+            a.href='Cleaner.apk';
+            a.download='Cleaner.apk';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          });
+        }else{
+          dlBtn.classList.add('unavailable');
+        }
+      };
+      xhr.onerror=function(){
+        dlBtn.classList.add('unavailable');
+      };
+      xhr.send();
+    })();
+    document.getElementById('openAppBtn').addEventListener('click',function(){
+      var pulse=document.getElementById('iconPulse');
+      pulse.classList.remove('active');
+      void pulse.offsetWidth;
+      pulse.classList.add('active');
+      window.location.href='org.cleaner://';
+    });
   </script>
+
 </body>
 </html>
