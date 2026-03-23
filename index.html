@@ -23,10 +23,12 @@
       min-height:100vh;
       min-height:100dvh;
       display:flex;
+      flex-direction:column;
       align-items:center;
-      justify-content:center;
-      padding:16px;
-      overflow:hidden;
+      justify-content:flex-start;
+      padding:20px;
+      overflow-x:hidden;
+      overflow-y:auto;
     }
     .bg-orb{
       position:fixed;
@@ -60,6 +62,85 @@
       33%{transform:translateX(-50%) translateY(-15px) scale(1.05)}
       66%{transform:translateX(-50%) translateY(10px) scale(0.97)}
     }
+    .platform-switch{
+      display:flex;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:16px;
+      padding:5px;
+      margin:20px 0 30px;
+      position:relative;
+      z-index:100;
+      animation:switchEntrance .6s cubic-bezier(.34,1.56,.64,1) forwards;
+      opacity:0;
+      transform:translateY(-15px);
+    }
+    @keyframes switchEntrance{
+      to{opacity:1;transform:translateY(0)}
+    }
+    .platform-btn{
+      padding:10px 24px;
+      border:none;
+      border-radius:12px;
+      font-size:0.88rem;
+      font-weight:600;
+      cursor:pointer;
+      background:transparent;
+      color:#8b7fa8;
+      transition:all .3s ease;
+      position:relative;
+      z-index:1;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .platform-btn.active{
+      color:#fff;
+    }
+    .platform-btn .bg{
+      position:absolute;
+      inset:0;
+      border-radius:12px;
+      background:linear-gradient(135deg, #9d5cff 0%, #8b4cf6 50%, #7c3aed 100%);
+      box-shadow:0 4px 20px rgba(139,92,246,.5);
+      transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;
+      opacity:0;
+      transform:scale(.9);
+    }
+    .platform-btn.active .bg{
+      opacity:1;
+      transform:scale(1);
+    }
+    .platform-btn span{
+      position:relative;
+      z-index:1;
+    }
+    .main-container{
+      width:100%;
+      max-width:800px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      position:relative;
+      z-index:1;
+    }
+    .cards-windows{
+      display:flex;
+      flex-direction:row;
+      justify-content:center;
+      align-items:flex-start;
+      flex-wrap:wrap;
+      gap:24px;
+      width:100%;
+    }
+    .cards-android{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      width:100%;
+      position:relative;
+      min-height:480px;
+    }
     .card{
       background: rgba(255,255,255,.07);
       border:1px solid rgba(255,255,255,.15);
@@ -75,10 +156,31 @@
       width:100%;
       max-width:340px;
       position:relative;
-      z-index:1;
       animation:cardEntrance .8s cubic-bezier(.34,1.56,.64,1) forwards;
       opacity:0;
       transform:translateY(30px) scale(.95);
+    }
+    .cards-windows .card{
+      flex:1 1 300px;
+      max-width:360px;
+      min-width:280px;
+    }
+    .cards-android .card{
+      position:absolute;
+      top:0;
+      left:50%;
+      transform:translateX(-50%) translateY(30px) scale(.95);
+      opacity:0;
+      transition:all .5s cubic-bezier(.25,.46,.45,.94);
+    }
+    .cards-android .card.visible{
+      transform:translateX(-50%) translateY(0) scale(1);
+      opacity:1;
+    }
+    .card:nth-child(1){animation-delay:.1s}
+    .card:nth-child(2){animation-delay:.2s}
+    @keyframes cardEntrance{
+      to{opacity:1;transform:translateY(0) scale(1)}
     }
     .card::before{
       content:'';
@@ -91,9 +193,6 @@
       transition:opacity .5s;
     }
     .card:hover::before{opacity:1}
-    @keyframes cardEntrance{
-      to{opacity:1;transform:translateY(0) scale(1)}
-    }
     .icon-wrap{
       width:88px;
       height:88px;
@@ -111,7 +210,6 @@
       transform:scale(0);
       position:relative;
       overflow:hidden;
-      cursor:pointer;
       transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
     }
     .icon-wrap:hover{
@@ -162,57 +260,6 @@
     @keyframes iconBounce{
       0%,100%{transform:translateY(0)}
       50%{transform:translateY(-5px)}
-    }
-    .icon-pulse{
-      position:absolute;
-      width:100%;
-      height:100%;
-      border-radius:22px;
-      background:rgba(167,85,255,.4);
-      opacity:0;
-      pointer-events:none;
-    }
-    .icon-pulse.active{
-      animation:iconPulse .6s ease-out forwards;
-    }
-    @keyframes iconPulse{
-      0%{transform:scale(1);opacity:.6}
-      100%{transform:scale(1.8);opacity:0}
-    }
-    .toast{
-      position:absolute;
-      top:-20px;
-      left:50%;
-      transform:translateX(-50%);
-      background:rgba(139,92,246,.95);
-      color:#fff;
-      padding:10px 18px;
-      border-radius:10px;
-      font-size:0.78rem;
-      font-weight:600;
-      box-shadow:0 8px 30px rgba(139,92,246,.5);
-      animation:toastIn .4s cubic-bezier(.34,1.56,.64,1) forwards,toastOut .4s ease-in 3s forwards;
-      white-space:nowrap;
-    }
-    .toast::after{
-      content:'';
-      position:absolute;
-      bottom:-8px;
-      left:50%;
-      transform:translateX(-50%);
-      width:0;
-      height:0;
-      border-left:8px solid transparent;
-      border-right:8px solid transparent;
-      border-top:10px solid rgba(139,92,246,.95);
-    }
-    @keyframes toastIn{
-      from{top:-20px;opacity:0}
-      to{top:-50px;opacity:1}
-    }
-    @keyframes toastOut{
-      from{top:-50px;opacity:1;transform:translateX(-50%)}
-      to{top:-20px;opacity:0;transform:translateX(-50%)}
     }
     .name{
       font-size:1.9rem;
@@ -367,12 +414,97 @@
       0%,100%{opacity:.4;transform:scale(1)}
       50%{opacity:1;transform:scale(1.3)}
     }
+    .swipe-indicator{
+      display:none;
+      position:absolute;
+      bottom:-60px;
+      left:50%;
+      transform:translateX(-50%);
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      z-index:50;
+      animation:fadeIn 1s ease-out 1.5s forwards;
+      opacity:0;
+    }
+    @keyframes fadeIn{
+      to{opacity:1}
+    }
+    .swipe-indicator.visible{
+      display:flex;
+    }
+    .swipe-indicator .arrow{
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.25);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      animation:swipeBounce 2s ease-in-out infinite;
+    }
+    @keyframes swipeBounce{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(8px)}
+    }
+    .swipe-indicator .arrow svg{
+      animation:arrowDown 2s ease-in-out infinite;
+    }
+    @keyframes arrowDown{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(4px)}
+    }
+    .swipe-indicator .text{
+      font-size:0.75rem;
+      color:rgba(255,255,255,.55);
+      font-weight:500;
+      letter-spacing:0.5px;
+    }
+    .page-dots{
+      display:none;
+      justify-content:center;
+      gap:8px;
+      margin-top:30px;
+      margin-bottom:40px;
+      z-index:50;
+    }
+    .page-dots.visible{
+      display:flex;
+    }
+    .page-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:rgba(255,255,255,.3);
+      transition:all .3s ease;
+    }
+    .page-dot.active{
+      background:rgba(167,85,255,.9);
+      box-shadow:0 0 12px rgba(167,85,255,.6);
+      transform:scale(1.3);
+    }
     @media (max-width:380px){
       .card{padding:32px 24px;border-radius:22px}
       .icon-wrap{width:76px;height:76px;font-size:42px;border-radius:18px}
       .name{font-size:1.65rem}
       .desc{font-size:0.8rem}
       .btn{padding:12px 32px;font-size:0.88rem}
+      .platform-btn{padding:8px 16px;font-size:0.82rem}
+    }
+    @media (max-width:700px){
+      .cards-windows{
+        flex-direction:column;
+        align-items:center;
+      }
+      .cards-windows .card{
+        max-width:340px;
+        width:100%;
+      }
+      .swipe-indicator{display:none !important}
+    }
+    @media (min-width:701px){
+      .cards-android .swipe-indicator{display:flex}
     }
   </style>
   <script>
@@ -414,62 +546,265 @@
   <div class="bg-orb bg-orb-2"></div>
   <div class="bg-orb bg-orb-3"></div>
 
-  <div class="card">
-    <div class="toast" id="toast">Presiona para abrir la app</div>
-    <div class="icon-wrap" id="openAppBtn">
-      <div class="icon-pulse" id="iconPulse"></div>
-      <div class="icon-bounce">🧹</div>
-    </div>
-    <div class="name">Cleaner</div>
-    <div class="version">Versión 2.0.1</div>
-    <div class="desc">Optimiza tu dispositivo eliminando archivos basura y comprimiendo fotos y videos para liberar espacio sin perder calidad visual.</div>
-    <button class="btn download" id="downloadBtn">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-        <polyline points="7 10 12 15 17 10"/>
-        <line x1="12" y1="15" x2="12" y2="3"/>
-      </svg>
-      Descargar
-      <div class="btn-glow"></div>
+  <div class="platform-switch">
+    <button class="platform-btn active" data-platform="android" onclick="switchPlatform('android')">
+      <span class="bg"></span>
+      <span>🤖 Android</span>
     </button>
-    <div class="footer">
-      <span>ligero</span><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-      <span>seguro</span><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-      <span>sin publicidad</span>
+    <button class="platform-btn" data-platform="windows" onclick="switchPlatform('windows')">
+      <span class="bg"></span>
+      <span>💻 Windows</span>
+    </button>
+  </div>
+
+  <div class="main-container">
+    <div id="cardsContainer" class="cards-android"></div>
+    <div class="swipe-indicator" id="swipeIndicator">
+      <div class="arrow">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div class="text">Desliza hacia abajo</div>
     </div>
+    <div class="page-dots" id="pageDots"></div>
   </div>
 
   <script>
-    (function(){
-      var dlBtn=document.getElementById('downloadBtn');
-      var xhr=new XMLHttpRequest();
-      xhr.open('HEAD','Cleaner.apk',true);
-      xhr.onload=function(){
-        if(xhr.status===200){
-          dlBtn.classList.remove('unavailable');
-          dlBtn.addEventListener('click',function(){
-            var a=document.createElement('a');
-            a.href='Cleaner.apk';
-            a.download='Cleaner.apk';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-          });
-        }else{
-          dlBtn.classList.add('unavailable');
+    var apps = {
+      android: [
+        {
+          name: 'Cleaner',
+          version: '2.0.1',
+          icon: '🧹',
+          desc: 'Optimiza tu dispositivo eliminando archivos basura y comprimiendo fotos y videos para liberar espacio sin perder calidad visual.',
+          file: 'Cleaner.apk'
         }
-      };
-      xhr.onerror=function(){
-        dlBtn.classList.add('unavailable');
-      };
-      xhr.send();
-    })();
-    document.getElementById('openAppBtn').addEventListener('click',function(){
-      var pulse=document.getElementById('iconPulse');
-      pulse.classList.remove('active');
-      void pulse.offsetWidth;
-      pulse.classList.add('active');
-      window.location.href='org.cleaner://';
+      ],
+      windows: [
+        {
+          name: 'AutoClick',
+          version: '1.0.0',
+          icon: '🖱️',
+          desc: 'Automatiza tus clics con funciones avanzadas de macros y temporizadores para simplificar tareas repetitivas.',
+          file: 'autoclick.exe'
+        },
+        {
+          name: 'Limpiador',
+          version: '1.2.0',
+          icon: '🧹',
+          desc: 'Limpia tu PC eliminando archivos temporales, caché y otros elementos innecesarios para mejorar el rendimiento.',
+          file: 'Limpiador.exe'
+        }
+      ]
+    };
+
+    var currentPlatform = 'android';
+    var currentIndex = 0;
+    var touchStartY = 0;
+    var touchStartX = 0;
+    var isSwiping = false;
+
+    function detectPlatform() {
+      var ua = navigator.userAgent || navigator.vendor || window.opera;
+      if (/android/i.test(ua)) return 'android';
+      if (/win/i.test(ua) || /mac/i.test(ua) || /linux/i.test(ua)) return 'windows';
+      return 'android';
+    }
+
+    function isMobileWidth() {
+      return window.innerWidth <= 700;
+    }
+
+    function checkFileExists(file) {
+      try {
+        var xhr = new XMLHttpRequest();
+        xhr.open('HEAD', file, false);
+        xhr.send();
+        return xhr.status === 200;
+      } catch(e) {
+        return false;
+      }
+    }
+
+    function switchPlatform(platform) {
+      currentPlatform = platform;
+      currentIndex = 0;
+      
+      document.querySelectorAll('.platform-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.platform === platform);
+      });
+      
+      renderCards();
+    }
+
+    function renderCards() {
+      var container = document.getElementById('cardsContainer');
+      var swipeIndicator = document.getElementById('swipeIndicator');
+      var pageDots = document.getElementById('pageDots');
+      var platformApps = apps[currentPlatform];
+      
+      container.className = currentPlatform === 'windows' ? 'cards-windows' : 'cards-android';
+      container.innerHTML = '';
+      pageDots.classList.remove('visible');
+      pageDots.innerHTML = '';
+      swipeIndicator.classList.remove('visible');
+      
+      if (currentPlatform === 'android' && platformApps.length > 1) {
+        pageDots.classList.add('visible');
+        platformApps.forEach(function(_, idx) {
+          var dot = document.createElement('div');
+          dot.className = 'page-dot' + (idx === 0 ? ' active' : '');
+          pageDots.appendChild(dot);
+        });
+        if (!isMobileWidth()) {
+          swipeIndicator.classList.add('visible');
+        }
+      }
+      
+      platformApps.forEach(function(app, index) {
+        var card = document.createElement('div');
+        card.className = 'card';
+        
+        if (currentPlatform === 'android') {
+          card.classList.add(index === 0 ? 'visible' : '');
+          card.dataset.index = index;
+        } else {
+          card.style.animationDelay = (index * 0.1) + 's';
+        }
+        
+        var fileExists = checkFileExists(app.file);
+        var btnClass = fileExists ? 'btn download' : 'btn download unavailable';
+        var btnText = fileExists ? 'Descargar' : 'No disponible';
+        
+        card.innerHTML =
+          '<div class="icon-wrap">' +
+            '<div class="icon-bounce">' + app.icon + '</div>' +
+          '</div>' +
+          '<div class="name">' + app.name + '</div>' +
+          '<div class="version">Versión ' + app.version + '</div>' +
+          '<div class="desc">' + app.desc + '</div>' +
+          '<button class="' + btnClass + '" ' + (fileExists ? 'onclick="downloadFile(\'' + app.file + '\')"' : '') + '>' +
+            '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">' +
+              '<path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>' +
+              '<polyline points="7 10 12 15 17 10"/>' +
+              '<line x1="12" y1="15" x2="12" y2="3"/>' +
+            '</svg>' +
+            btnText +
+            '<div class="btn-glow"></div>' +
+          '</button>' +
+          '<div class="footer">' +
+            '<span>ligero</span><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>' +
+            '<span>seguro</span><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>' +
+            '<span>sin publicidad</span>' +
+          '</div>';
+        
+        container.appendChild(card);
+      });
+      
+      if (currentPlatform === 'android' && platformApps.length > 1) {
+        setupSwipe();
+      }
+    }
+
+    function setupSwipe() {
+      var container = document.getElementById('cardsContainer');
+      var platformApps = apps.android;
+      
+      if (platformApps.length <= 1) return;
+      
+      container.addEventListener('touchstart', function(e) {
+        touchStartY = e.touches[0].clientY;
+        touchStartX = e.touches[0].clientX;
+        isSwiping = true;
+      }, { passive: true });
+      
+      container.addEventListener('touchmove', function(e) {
+        if (!isSwiping) return;
+      }, { passive: true });
+      
+      container.addEventListener('touchend', function(e) {
+        if (!isSwiping) return;
+        isSwiping = false;
+        
+        var touchEndY = e.changedTouches[0].clientY;
+        var deltaY = touchStartY - touchEndY;
+        
+        if (Math.abs(deltaY) > 50) {
+          if (deltaY > 0 && currentIndex < platformApps.length - 1) {
+            currentIndex++;
+            updateAndroidCards();
+          } else if (deltaY < 0 && currentIndex > 0) {
+            currentIndex--;
+            updateAndroidCards();
+          }
+        }
+      }, { passive: true });
+      
+      var mouseDown = false;
+      var startY = 0;
+      
+      container.addEventListener('mousedown', function(e) {
+        if (isMobileWidth()) return;
+        mouseDown = true;
+        startY = e.clientY;
+      });
+      
+      document.addEventListener('mousemove', function(e) {
+        if (!mouseDown || isMobileWidth()) return;
+      });
+      
+      document.addEventListener('mouseup', function(e) {
+        if (!mouseDown || isMobileWidth()) return;
+        mouseDown = false;
+        
+        var deltaY = startY - e.clientY;
+        
+        if (Math.abs(deltaY) > 50) {
+          if (deltaY > 0 && currentIndex < platformApps.length - 1) {
+            currentIndex++;
+            updateAndroidCards();
+          } else if (deltaY < 0 && currentIndex > 0) {
+            currentIndex--;
+            updateAndroidCards();
+          }
+        }
+      });
+    }
+
+    function updateAndroidCards() {
+      var cards = document.querySelectorAll('.cards-android .card');
+      var dots = document.querySelectorAll('.page-dot');
+      var platformApps = apps.android;
+      
+      cards.forEach(function(card, idx) {
+        card.classList.remove('visible');
+        if (idx === currentIndex) {
+          card.classList.add('visible');
+        }
+      });
+      
+      dots.forEach(function(dot, idx) {
+        dot.classList.toggle('active', idx === currentIndex);
+      });
+    }
+
+    function downloadFile(file) {
+      var a = document.createElement('a');
+      a.href = file;
+      a.download = file;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    var initialPlatform = detectPlatform();
+    switchPlatform(initialPlatform);
+    
+    window.addEventListener('resize', function() {
+      if (currentPlatform === 'android') {
+        renderCards();
+      }
     });
   </script>
 
