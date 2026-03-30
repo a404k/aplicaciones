@@ -8,17 +8,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
+    html,body{min-height:100%}
     body{
       font-family: Inter, system-ui, -apple-system, sans-serif;
       color:#e8e8f0;
       background:
-        radial-gradient(ellipse at 50% -15%, rgba(167,85,255,.5), transparent 50%),
-        radial-gradient(ellipse at 15% 85%, rgba(120,60,255,.4), transparent 50%),
-        radial-gradient(ellipse at 85% 85%, rgba(200,140,255,.35), transparent 50%),
+        radial-gradient(ellipse at 50% 0%, rgba(167,85,255,.5), transparent 50%),
+        radial-gradient(ellipse at 15% 100%, rgba(120,60,255,.4), transparent 50%),
+        radial-gradient(ellipse at 85% 100%, rgba(200,140,255,.35), transparent 50%),
         linear-gradient(160deg, #0f0b1a 0%, #0c0918 50%, #08060f 100%);
-      min-height:100vh;
-      min-height:100dvh;
+      background-attachment:fixed;
+      min-height:100%;
       display:flex;
       flex-direction:column;
       align-items:center;
@@ -27,9 +27,9 @@
       overflow-y:auto;
     }
     .bg-orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:orbFloat 8s ease-in-out infinite}
-    .bg-orb-1{width:300px;height:300px;top:-80px;left:50%;transform:translateX(-50%);background:radial-gradient(circle, rgba(167,85,255,.45), transparent 70%)}
-    .bg-orb-2{width:250px;height:250px;bottom:-60px;left:10%;background:radial-gradient(circle, rgba(130,70,255,.35), transparent 70%);animation-delay:-3s}
-    .bg-orb-3{width:220px;height:220px;bottom:-40px;right:5%;background:radial-gradient(circle, rgba(200,140,255,.3), transparent 70%);animation-delay:-5s}
+    .bg-orb-1{width:300px;height:300px;top:0;left:50%;transform:translateX(-50%);background:radial-gradient(circle, rgba(167,85,255,.45), transparent 70%)}
+    .bg-orb-2{width:250px;height:250px;bottom:0;left:10%;background:radial-gradient(circle, rgba(130,70,255,.35), transparent 70%);animation-delay:-3s}
+    .bg-orb-3{width:220px;height:220px;bottom:0;right:5%;background:radial-gradient(circle, rgba(200,140,255,.3), transparent 70%);animation-delay:-5s}
     @keyframes orbFloat{0%,100%{transform:translateX(-50%) translateY(0)}33%{transform:translateX(-50%) translateY(-15px)}66%{transform:translateX(-50%) translateY(10px)}}
     .platform-switch{display:flex;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:5px;margin:20px 0 30px;position:relative;z-index:10}
     .platform-btn{padding:10px 24px;border:none;border-radius:12px;font-size:0.88rem;font-weight:600;cursor:pointer;background:transparent;color:#8b7fa8;position:relative;z-index:1;display:flex;align-items:center;gap:8px;transition:color .3s}
@@ -89,6 +89,7 @@
     var apps={
       android:[
         {name:'Cleaner',version:'2.0.1',logo:'logos/Cleaner.webp',desc:'Widget interactivo para limpiar tu dispositivo. Elimina archivos basura, limpia caché y mejora el rendimiento del sistema rápidamente.',file:'Cleaner.apk'},
+        {name:'TubePlus',version:'1.0.0',logo:'logos/TubePlus.png',desc:'Tu compañero definitivo para YouTube. Disfruta de experiencia premium sin suscripción: descarga videos y audio en alta calidad, reproduce en segundo plano y bloquea anuncios.',file:'TubePlus.apk'},
         {name:'TV-Gold',version:'1.5.0',logo:'logos/Tv-Gold.webp',desc:'1,473 canales de TV gratis: televisión, noticias, música, deportes, películas, series y más en streaming en vivo.',file:'TV-Gold.apk'}
       ],
       windows:[
