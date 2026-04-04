@@ -1,110 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <meta name="theme-color" content="#0d0b14" />
-  <title>Cleaner</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html,body{min-height:100%}
-    body{
-      font-family: Inter, system-ui, -apple-system, sans-serif;
-      color:#e8e8f0;
-      background:
-        radial-gradient(ellipse at 50% 0%, rgba(167,85,255,.5), transparent 50%),
-        radial-gradient(ellipse at 15% 100%, rgba(120,60,255,.4), transparent 50%),
-        radial-gradient(ellipse at 85% 100%, rgba(200,140,255,.35), transparent 50%),
-        linear-gradient(160deg, #0f0b1a 0%, #0c0918 50%, #08060f 100%);
-      background-attachment:fixed;
-      min-height:100%;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      padding:20px;
-      overflow-x:hidden;
-      overflow-y:auto;
-    }
-    .bg-orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:orbFloat 8s ease-in-out infinite}
-    .bg-orb-1{width:300px;height:300px;top:0;left:50%;transform:translateX(-50%);background:radial-gradient(circle, rgba(167,85,255,.45), transparent 70%)}
-    .bg-orb-2{width:250px;height:250px;bottom:0;left:10%;background:radial-gradient(circle, rgba(130,70,255,.35), transparent 70%);animation-delay:-3s}
-    .bg-orb-3{width:220px;height:220px;bottom:0;right:5%;background:radial-gradient(circle, rgba(200,140,255,.3), transparent 70%);animation-delay:-5s}
-    @keyframes orbFloat{0%,100%{transform:translateX(-50%) translateY(0)}33%{transform:translateX(-50%) translateY(-15px)}66%{transform:translateX(-50%) translateY(10px)}}
-    .platform-switch{display:flex;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:5px;margin:20px 0 30px;position:relative;z-index:10}
-    .platform-btn{padding:10px 24px;border:none;border-radius:12px;font-size:0.88rem;font-weight:600;cursor:pointer;background:transparent;color:#8b7fa8;position:relative;z-index:1;display:flex;align-items:center;gap:8px;transition:color .3s}
-    .platform-btn.active{color:#fff}
-    .platform-btn .bg{position:absolute;inset:0;border-radius:12px;background:linear-gradient(135deg, #9d5cff, #8b4cf6, #7c3aed);box-shadow:0 4px 20px rgba(139,92,246,.5);opacity:0;transform:scale(.9);transition:transform .3s,opacity .3s}
-    .platform-btn.active .bg{opacity:1;transform:scale(1)}
-    .platform-btn span{position:relative;z-index:1}
-    .cards-container{display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:stretch;gap:20px;width:100%;max-width:800px;z-index:1}
-    @media (max-width:600px){.cards-container{flex-direction:column;align-items:center;max-width:340px}}
-    .card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:28px;padding:40px 36px;backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);box-shadow:0 32px 80px rgba(0,0,0,.7),0 0 80px rgba(139,92,246,.12),inset 0 1px 0 rgba(255,255,255,.12);text-align:center;width:100%;max-width:340px;position:relative;opacity:0;transform:translateY(30px);animation:cardIn .6s cubic-bezier(.34,1.56,.64,1) forwards;display:flex;flex-direction:column;min-height:420px}
-    @media (min-width:601px){.card{flex:1 1 300px;max-width:360px;min-height:400px}}
-    @keyframes cardIn{to{opacity:1;transform:translateY(0)}}
-    .card::before{content:'';position:absolute;inset:-1px;border-radius:29px;background:linear-gradient(135deg, rgba(200,160,255,.3), rgba(139,92,246,.1), rgba(100,60,220,.2));z-index:-1;opacity:0;transition:opacity .5s}
-    .card:hover::before{opacity:1}
-    .icon-wrap{width:88px;height:88px;margin:0 auto 18px;border-radius:22px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 40px rgba(167,85,255,.5);position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s;flex-shrink:0;-webkit-tap-highlight-color:transparent}
-    .icon-wrap:hover{transform:scale(1.08);box-shadow:0 12px 50px rgba(167,85,255,.7)}
-    .icon-wrap:active{transform:scale(.95);box-shadow:0 4px 20px rgba(167,85,255,.4)}
-    .icon-wrap img{width:100%;height:100%;object-fit:contain;border-radius:22px}
-    .name{font-size:1.9rem;font-weight:800;letter-spacing:-0.5px;background:linear-gradient(135deg,#f0e8ff,#d8c8ff,#c4a8ff,#dcc8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:5px}
-    .version{font-size:0.75rem;font-weight:500;color:#b8a0d8;margin-bottom:20px;letter-spacing:2px;text-transform:uppercase}
-    .desc{font-size:0.85rem;color:#a090c8;line-height:1.6;margin-bottom:26px;flex:1}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 38px;border-radius:999px;border:0;font-size:0.92rem;font-weight:700;cursor:pointer;position:relative;z-index:1;letter-spacing:0.3px;overflow:hidden;flex-shrink:0;-webkit-tap-highlight-color:transparent;outline:none}
-    .btn::before{content:'';position:absolute;inset:0;border-radius:999px;padding:2px;background:linear-gradient(135deg,#c4a8ff,#8b5cf6,#7c3aed);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .3s}
-    .btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.2);opacity:0;transition:opacity .15s}
-    .btn:active::after{opacity:1}
-    .btn.download{background:linear-gradient(135deg,#9d5cff,#8b4cf6,#7c3aed,#6d28d9);color:#fff;box-shadow:0 8px 35px rgba(167,85,255,.55),0 2px 8px rgba(0,0,0,.3);transition:transform .15s,box-shadow .15s}
-    .btn.download:hover{transform:translateY(-4px);box-shadow:0 14px 50px rgba(167,85,255,.75),0 4px 15px rgba(0,0,0,.3)}
-    .btn.download:hover::before{opacity:1}
-    .btn.download:active{transform:translateY(1px) scale(0.98);box-shadow:0 4px 20px rgba(167,85,255,.4),inset 0 2px 4px rgba(0,0,0,.2)}
-    .btn.unavailable{background:linear-gradient(135deg,#ff4d4d,#e63939,#cc2936);color:#fff;box-shadow:0 8px 35px rgba(255,77,77,.4);cursor:not-allowed}
-    .btn.unavailable:active{transform:scale(0.98)}
-    .btn-glow{position:absolute;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle, rgba(167,85,255,.4), transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:-1;animation:btnGlow 2s ease-in-out infinite}
-    @keyframes btnGlow{0%,100%{opacity:.5}50%{opacity:1}}
-    .footer{margin-top:20px;font-size:0.7rem;color:#5a4e78;flex-shrink:0}
-    .footer span{color:#9b7fd0;font-weight:600}
-    .dots{display:inline-flex;gap:5px;margin-left:4px;vertical-align:middle}
-    .dot{width:4px;height:4px;border-radius:50%;background:#7b5fbf;animation:dotPulse 1.5s ease-in-out infinite}
-    .dot:nth-child(2){animation-delay:.2s}
-    .dot:nth-child(3){animation-delay:.4s}
-    @keyframes dotPulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
-    @media (max-width:380px){.card{padding:32px 24px;border-radius:22px;min-height:380px}.icon-wrap{width:76px;height:76px}.name{font-size:1.65rem}.desc{font-size:0.8rem}.btn{padding:12px 32px;font-size:0.88rem}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#120e21">
+<title>Apps - Cleaner</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--p:#9d5cff;--p-g:linear-gradient(135deg, #a755ff 0%, #8b4cf6 50%, #7c3aed 100%);--p-s:0 4px 20px rgba(139, 92, 246, 0.5);--b-g:#0f0b1a;--txt:#e8e8f0;--txt-s:#a090c8;--c-b:rgba(255, 255, 255, 0.08);--c-br:rgba(255, 255, 255, 0.15);--t:.3s;--e:cubic-bezier(0.4, 0, 0.2, 1)}*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body{font-family:'Inter',sans-serif;background-color:var(--b-g);color:var(--txt);display:flex;flex-direction:column;align-items:center;padding:30px;min-height:100vh;overflow-x:hidden}body::after,body::before{content:'';position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:-1}body::before{width:300px;height:300px;background:radial-gradient(circle, rgba(167, 85, 255, 0.5) 0%, transparent 70%);top:0;left:50%;transform:translate(-50%,-100px)}body::after{width:250px;height:250px;background:radial-gradient(circle, rgba(130, 70, 255, 0.4) 0%, transparent 70%);bottom:0;left:10%;transform:translateY(80px)}.platform-switch{background:var(--c-b);border:1px solid var(--c-br);border-radius:16px;padding:5px;display:flex;margin-bottom:40px;position:relative;z-index:10;user-select:none}.platform-btn{flex:1;padding:12px 24px;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;background:transparent;color:var(--txt-s);transition:color var(--t);position:relative;z-index:1;display:flex;align-items:center;gap:8px}.platform-btn.active{color:#fff}.platform-btn .bg{position:absolute;inset:0;background:var(--p-g);border-radius:12px;opacity:0;transform:scale(0.9);transition:transform var(--t) var(--e), opacity var(--t) var(--e);z-index:-1;box-shadow:var(--p-s)}.platform-btn.active .bg{opacity:1;transform:scale(1)}.app-container{width:100%;max-width:1200px;display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:25px;justify-content:center}.app-card{background:var(--c-b);border:1px solid var(--c-br);border-radius:28px;padding:36px;display:flex;flex-direction:column;align-items:center;text-align:center;transition:transform var(--t) var(--e), box-shadow var(--t) var(--e), border-color var(--t) var(--e);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);position:relative;will-change:transform, box-shadow;opacity:0;transform:translateY(20px);animation:cardIn .6s var(--e) forwards}.app-card:nth-child(2){animation-delay:.1s}.app-card:nth-child(3){animation-delay:.2s}.app-card:nth-child(n+4){animation-delay:.3s}@keyframes cardIn{to{opacity:1;transform:translateY(0)}}.app-card:hover{transform:translateY(-8px);border-color:rgba(255,255,255,0.3);box-shadow:0 32px 80px rgba(0,0,0,0.7), 0 0 60px rgba(167, 85, 255, 0.2), inset 0 1px 0 rgba(255,255,255,0.1)}.app-icon-wrap{width:90px;height:90px;margin-bottom:20px;position:relative;display:flex;align-items:center;justify-content:center;border-radius:24px;background:rgba(255,255,255,0.05);padding:10px;box-shadow:0 8px 32px rgba(0,0,0,0.4);border:1px solid var(--c-br)}.app-icon{width:100%;height:100%;object-fit:contain}.app-card:hover .app-icon-wrap{animation:iconBop 1.2s var(--e) infinite}@keyframes iconBop{0%,100%{transform:rotate(0deg)}25%{transform:rotate(3deg) scale(1.05)}75%{transform:rotate(-3deg) scale(1.05)}}.app-title{font-size:2rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px;background:linear-gradient(135deg, #f0e8ff, #c4a8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.app-version{font-size:12px;font-weight:600;color:var(--txt-s);margin-bottom:20px;text-transform:uppercase;letter-spacing:1px}.app-desc{font-size:14px;color:var(--txt-s);line-height:1.7;margin-bottom:30px;flex:1}.features{width:100%;display:flex;justify-content:center;gap:12px;margin-top:auto;margin-bottom:25px;font-size:12px;font-weight:600;color:#9b7fd0}.features span{background:rgba(157, 92, 255, 0.15);padding:6px 14px;border-radius:999px}.download-btn{display:flex;align-items:center;gap:10px;padding:16px 36px;border-radius:999px;font-size:15px;font-weight:700;text-decoration:none;cursor:pointer;position:relative;border:none;transition:transform .15s var(--e), box-shadow .15s var(--e), background-color var(--t) var(--e);overflow:hidden;user-select:none;touch-action:manipulation;letter-spacing:0.3px}.download-btn::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0.15);opacity:0;transition:opacity .15s var(--e)}.download-btn:active::before{opacity:1}.download-btn:not([disabled]){background:linear-gradient(135deg, #9d5cff, #8b4cf6, #7c3aed);color:#fff;box-shadow:0 12px 40px rgba(167, 85, 255, 0.6), inset 0 2px 4px rgba(255,255,255,0.3);animation:pulse 2.5s infinite}.download-btn:not([disabled]):hover{transform:translateY(-4px);box-shadow:0 16px 50px rgba(167, 85, 255, 0.8), inset 0 2px 4px rgba(255,255,255,0.4)}.download-btn:not([disabled]):active{transform:translateY(1px) scale(0.98);box-shadow:0 6px 20px rgba(167, 85, 255, 0.5), inset 0 1px 2px rgba(0,0,0,0.2)}@keyframes pulse{0%{box-shadow:0 12px 40px rgba(167, 85, 255, 0.6)}50%{box-shadow:0 12px 60px rgba(167, 85, 255, 0.9)}100%{box-shadow:0 12px 40px rgba(167, 85, 255, 0.6)}}.download-btn.unavailable{background:linear-gradient(135deg, #444, #333);color:#aaa;cursor:not-allowed}.download-btn[disabled]{background:var(--c-b);border:1px solid var(--c-br);color:var(--txt-s)}.app-status-error{display:none;position:absolute;top:15px;right:15px;color:#ff4d4d;font-size:11px;font-weight:600}.app-status-error.show{display:block}footer{margin-top:60px;padding:20px 0;width:100%;text-align:center;color:var(--txt-s);font-size:12px}@media (max-width:600px){.app-container{grid-template-columns:1fr}.platform-btn span:not(.bg){display:none}.platform-btn{padding:12px}}</style>
 </head>
 <body>
-  <div class="bg-orb bg-orb-1"></div>
-  <div class="bg-orb bg-orb-2"></div>
-  <div class="bg-orb bg-orb-3"></div>
-
-  <div class="platform-switch">
-    <button class="platform-btn active" data-platform="android" onclick="switchP('android')"><span class="bg"></span><span>🤖 Android</span></button>
-    <button class="platform-btn" data-platform="windows" onclick="switchP('windows')"><span class="bg"></span><span>💻 Windows</span></button>
-  </div>
-
-  <div class="cards-container" id="cardsContainer"></div>
-
-  <script>
-    var apps={
-      android:[
-        {name:'Cleaner',version:'2.0.2',logo:'logos/Cleaner.webp',desc:'Widget interactivo para limpiar tu dispositivo. Elimina archivos basura, limpia caché y mejora el rendimiento del sistema rápidamente.',file:'Cleaner.apk'},
-        {name:'TubePlus',version:'0.30.0',logo:'logos/TubePlus.png',desc:'Tu compañero definitivo para YouTube. Disfruta de experiencia premium sin suscripción: descarga videos y audio en alta calidad, reproduce en segundo plano y bloquea anuncios.',file:'TubePlus.apk'},
-        {name:'TV-Gold',version:'1.5.0',logo:'logos/Tv-Gold.webp',desc:'1,473 canales de TV gratis: televisión, noticias, música, deportes, películas, series y más en streaming en vivo.',file:'TV-Gold.apk'}
-      ],
-      windows:[
-        {name:'AutoClick',version:'1.0.0',logo:'logos/Autoclick.ico',desc:'Automatiza tus clics con funciones avanzadas de macros y temporizadores para simplificar tareas repetitivas.',file:'https://download1474.mediafire.com/ufezqo0up4pgnSfFNkFu1yjr1LdeN8QzCJuILjLgKjs2gIpeTSKdXwdpTCmYSWZhKEgBIHXQKuEbLvacII_G0YOm56kUY4hr1n7XkK55GSccin6eHikS69HpM_9v3872kZ1i62JIOCIzZK7GxGAO1-0U7gpdqJmbxfMMkwreQl1XNA/wnymx22tqrcjmva/AutoClick.7z'},
-        {name:'Limpiador',version:'1.2.0',logo:'logos/Limpiador.ico',desc:'Limpia tu PC eliminando archivos temporales, caché y otros elementos innecesarios para mejorar el rendimiento.',file:'https://download1584.mediafire.com/izdd8spz3sxglecQ8cVry1M35pqi_SfRVl-ISkjuYMI_RmxfY5Ljry8yzB1hzbN1vel7aRSozWgRz_fbEajiuDu6IlfjI0Jo1Z2RH2-Epeohb5Bkmbu7JLqIz6-ASj_vVDgKXwPzW6F-soon20fP5UJCIW9SFp611E39-GFybi9mlg/bbb4ecshfyhuvrq/Limpiador.7z'}
-      ]
-    };
-    var currPlat='android';
-    function detect(){var ua=navigator.userAgent||navigator.vendor||window.opera;if(/android/i.test(ua))return'android';if(/win/i.test(ua)||/mac/i.test(ua)||/linux/i.test(ua))return'windows';return'android'}
-    function switchP(p){if(p===currPlat)return;currPlat=p;document.querySelectorAll('.platform-btn').forEach(function(b){b.classList.toggle('active',b.dataset.platform===p)});render()}
-    function checkFile(f){if(f.startsWith('http'))return true;try{var x=new XMLHttpRequest();x.open('HEAD',f,false);x.send();return x.status===200}catch(e){return false}}
-    function render(){var c=document.getElementById('cardsContainer');c.innerHTML='';var list=apps[currPlat]||[];list.forEach(function(a,i){var exists=checkFile(a.file);var btnClass=exists?'btn download':'btn unavailable';var btnText=exists?'Descargar':'No disponible';var card=document.createElement('div');card.className='card';card.style.animationDelay=(i*0.1)+'s';card.innerHTML='<div class="icon-wrap"><img src="'+a.logo+'" alt="'+a.name+'"></div><div class="name">'+a.name+'</div><div class="version">Versión '+a.version+'</div><div class="desc">'+a.desc+'</div><button class="'+btnClass+'" '+(exists?'onclick="dl(\''+a.file+'\')"':'disabled')+'><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'+btnText+(exists?'<div class="btn-glow"></div>':'')+'</button><div class="footer"><span>ligero</span><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span><span>seguro</span><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span><span>sin publicidad</span></div>';c.appendChild(card)})}
-    function dl(f){var a=document.createElement('a');a.href=f;a.download=f.split('/').pop();document.body.appendChild(a);a.click();document.body.removeChild(a)}
-    (function(){document.addEventListener('keydown',function(e){if(e.key==='F12'||e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='J'||e.key==='C')||e.ctrlKey&&e.key==='U'){e.preventDefault()}});document.addEventListener('contextmenu',function(e){e.preventDefault()})})();
-    var initPlat=detect();currPlat=initPlat;document.querySelectorAll('.platform-btn').forEach(function(b){b.classList.toggle('active',b.dataset.platform===initPlat)});render();
-  </script>
+<div class="platform-switch">
+<button class="platform-btn" data-platform="android" onclick="switchPlatform('android')">
+<span class="bg"></span>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.52 18c.64 0 1.16-.52 1.16-1.16v-6.32c0-.64-.52-1.16-1.16-1.16-.64 0-1.16.52-1.16 1.16v6.32c0 .64.52 1.16 1.16 1.16zM6.48 18c.64 0 1.16-.52 1.16-1.16v-6.32c0-.64-.52-1.16-1.16-1.16s-1.16.52-1.16 1.16v6.32c0 .64.52 1.16 1.16 1.16zm11.33-10.6l1.37-2.37a.5.5 0 0 0-.17-.69.5.5 0 0 0-.69.17l-1.38 2.39C15.8 6.32 14 6 12 6s-3.8.32-5.04.9L5.58 4.51a.5.5 0 0 0-.69-.17.5.5 0 0 0-.17.69l1.37 2.37c-2.43 1.25-3.9 3.2-3.9 5.4H20c0-2.2-1.47-4.15-3.9-5.4zM8 12a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm8 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+<span>Android</span>
+</button>
+<button class="platform-btn" data-platform="windows" onclick="switchPlatform('windows')">
+<span class="bg"></span>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.545l7.16-.925v7.19H3V5.545zM11.2 4.49L21 3.11v8.61h-9.8V4.49zm0 8.33H21V21.1l-9.8-1.39v-6.89zm-8.2.33h7.16v6.62L3 18.82v-5.67z"/></svg>
+<span>Windows</span>
+</button>
+</div>
+<div class="app-container" id="appContainer"></div>
+<footer>© 2024 Cleaner Apps</footer>
+<script>
+const apps={android:[{name:'Cleaner',version:'2.0.1',logo:'logos/Cleaner.webp',desc:'Elimina archivos basura, limpia caché y mejora el rendimiento de tu Android.',file:'Cleaner.apk'},{name:'TubePlus',version:'1.0.0',logo:'logos/TubePlus.png',desc:'Descarga videos y audio de YouTube, reproduce en segundo plano y sin anuncios.',file:'TubePlus.apk'},{name:'TV-Gold',version:'1.5.0',logo:'logos/Tv-Gold.webp',desc:'1,473 canales de TV gratis en vivo: noticias, deportes, películas y más.',file:'TV-Gold.apk'}],windows:[{name:'AutoClick',version:'1.0.0',logo:'logos/Autoclick.ico',desc:'Automatiza tus clics con macros advanced para simplificar tareas repetitivas.',file:'https://download1474.mediafire.com/ufezqo0up4pgnSfFNkFu1yjr1LdeN8QzCJuILjLgKjs2gIpeTSKdXwdpTCmYSWZhKEgBIHXQKuEbLvacII_G0YOm56kUY4hr1n7XkK55GSccin6eHikS69HpM_9v3872kZ1i62JIOCIzZK7GxGAO1-0U7gpdqJmbxfMMkwreQl1XNA/wnymx22tqrcjmva/AutoClick.7z'},{name:'Limpiador',version:'1.2.0',logo:'logos/Limpiador.ico',desc:'Limpia tu PC eliminando temporales y caché para un rendimiento óptimo.',file:'https://download1584.mediafire.com/izdd8spz3sxglecQ8cVry1M35pqi_SfRVl-ISkjuYMI_RmxfY5Ljry8yzB1hzbN1vel7aRSozWgRz_fbEajiuDu6IlfjI0Jo1Z2RH2-Epeohb5Bkmbu7JLqIz6-ASj_vVDgKXwPzW6F-soon20fP5UJCIW9SFp611E39-GFybi9mlg/bbb4ecshfyhuvrq/Limpiador.7z'}]};
+function getPlat(){const u=navigator.userAgent||navigator.vendor||window.opera;return/win|mac|linux/i.test(u)?'windows':'android'}
+let currPlat=null;
+function switchPlatform(p){if(p===currPlat)return;currPlat=p;document.querySelectorAll('.platform-btn').forEach(b=>b.classList.toggle('active',b.dataset.platform===p));renderApps()}
+async function checkF(url){try{if(url.startsWith('http'))return true;const r=await fetch(url,{method:'HEAD'});return r.ok}catch(e){return true}}
+async function renderApps(){const c=document.getElementById('appContainer');c.innerHTML='';const list=apps[currPlat]||[];for(const a of list){const d=document.createElement('div');d.className='app-card';const ok=await checkF(a.file);d.innerHTML=`<div class="app-icon-wrap"><img src="${a.logo}" alt="${a.name}" class="app-icon" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzQ0NCIvPjwvc3ZnPg=='"></div><div class="app-title">${a.name}</div><div class="app-version">Versión ${a.version}</div><p class="app-desc">${a.desc}</p><div class="features"><span>Ligero</span><span>Seguro</span><span>Sin Publicidad</span></div><a href="${a.file}" class="download-btn ${ok?'':'unavailable'}" ${ok?`download="${a.file.split('/').pop()}"`:'onclick="return false;" disabled'}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>${ok?'Descargar':(currPlat==='android'?'Próximamente':'No disponible')}</a><div class="app-status-error ${ok?'':'show'}">El archivo no está disponible</div>`;c.appendChild(d)}}
+document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='J'||e.key==='C'))||(e.ctrlKey&&e.key==='U'))e.preventDefault()});document.addEventListener('contextmenu',e=>e.preventDefault());
+switchPlatform(getPlat());
+</script>
 </body>
 </html>
