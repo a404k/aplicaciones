@@ -9,35 +9,60 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#08080a;--surface:#121216;--accent:#00f2ff;--premium:#facc15;--beta:#a855f7;--text:#ffffff;--sub:#94a3b8;--border:rgba(255,255,255,0.06);--shadow:0 25px 50px -12px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05)}
+:root{--bg:#08080a;--surface:#121216;--accent:#00f2ff;--premium:#facc15;--beta:#a855f7;--text:#ffffff;--sub:#94a3b8;--border:rgba(255,255,255,0.06);--shadow:0 25px 50px -12px rgba(0,0,0,0.7),0 0 0 1px rgba(255,255,255,0.05);--radius:24px;--radius-sm:16px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;padding-bottom:60px;min-height:100vh}
-.glow-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:radial-gradient(circle at 80% 0%, rgba(0,242,255,0.08), transparent 40%), radial-gradient(circle at 20% 100%, rgba(168,85,247,0.05), transparent 40%)}
-nav{position:sticky;top:0;background:rgba(8,8,10,0.85);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);z-index:100;padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.brand{font-weight:800;font-size:24px;letter-spacing:-1px;background:linear-gradient(90deg,#fff,#00f2ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-header{padding:50px 24px 30px;max-width:1000px;margin:0 auto}
-header h1{font-size:48px;font-weight:800;letter-spacing:-2.5px;margin-bottom:8px;line-height:1}
-header p{color:var(--sub);font-size:19px;font-weight:500}
-main{max-width:1000px;margin:0 auto;padding:10px 24px;display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:24px}
-.app-card{background:var(--surface);border-radius:35px;padding:26px;display:flex;align-items:center;gap:20px;box-shadow:var(--shadow);text-decoration:none;color:inherit;transition:all 0.5s cubic-bezier(0.16, 1, 0.3, 1);position:relative;border:1px solid var(--border);opacity:0;transform:translateY(30px);animation:appear 0.8s forwards}
-.app-card:hover{transform:translateY(-10px);border-color:rgba(0,242,255,0.4);box-shadow:0 35px 70px rgba(0,0,0,0.8), 0 0 30px rgba(0,242,255,0.1)}
-.app-icon{width:92px;height:92px;border-radius:24px;object-fit:cover;box-shadow:0 20px 40px rgba(0,0,0,0.4);background:#1c1c21;padding:2px}
-.app-info{flex:1;min-width:0}
-.app-info h2{font-size:20px;font-weight:700;margin-bottom:4px;letter-spacing:-0.5px}
-.cat{font-size:13px;color:var(--sub);margin-bottom:16px;font-weight:600;display:block;text-transform:uppercase;letter-spacing:1px}
-.btn-dl{background:linear-gradient(135deg, #00f2ff, #0066ff);color:#000;padding:12px 28px;border-radius:100px;font-size:14px;font-weight:800;display:inline-block;transition:all 0.3s ease}
-.app-card:hover .btn-dl{transform:scale(1.05);box-shadow:0 15px 30px rgba(0,242,255,0.4)}
-.tag{position:absolute;top:20px;right:20px;font-size:10px;font-weight:900;padding:4px 12px;border-radius:10px;text-transform:uppercase;letter-spacing:0.5px}
-.tag.premium{background:rgba(250,204,21,0.1);color:var(--premium);border:1px solid rgba(250,204,21,0.2)}
-.tag.beta{background:rgba(168,85,247,0.1);color:var(--beta);border:1px solid rgba(168,85,247,0.2)}
-.tag.nuevo{background:rgba(0,242,255,0.1);color:var(--accent);border:1px solid rgba(0,242,255,0.2)}
-@keyframes appear{to{opacity:1;transform:translateY(0)}}
-@media (max-width:480px){header h1{font-size:38px}main{grid-template-columns:1fr;padding:10px 15px}}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.glow-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:radial-gradient(circle at 80% 0%,rgba(0,242,255,0.1),transparent 45%),radial-gradient(circle at 20% 100%,rgba(168,85,247,0.07),transparent 45%);will-change:transform;animation:glowPulse 8s ease-in-out infinite alternate}
+@keyframes glowPulse{0%{opacity:.6}100%{opacity:1}}
+nav{position:sticky;top:0;background:rgba(8,8,10,0.88);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);z-index:100;padding:16px clamp(16px,4vw,32px);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.brand{font-weight:800;font-size:clamp(20px,3vw,28px);letter-spacing:-1px;background:linear-gradient(90deg,#fff,#00f2ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+header{padding:clamp(16px,3vw,36px) clamp(16px,4vw,32px) clamp(8px,1.5vw,16px);max-width:1400px;margin:0 auto;width:100%}
+header h1{font-size:clamp(28px,4.5vw,52px);font-weight:800;letter-spacing:-2px;margin-bottom:4px;line-height:1;background:linear-gradient(135deg,#fff 50%,var(--sub));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+header p{color:var(--sub);font-size:clamp(13px,1.2vw,17px);font-weight:500;padding-left:2px}
+main{max-width:1400px;margin:0 auto;padding:clamp(6px,1vw,12px) clamp(12px,4vw,32px);display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:clamp(12px,1.5vw,20px)}
+.app-card{background:var(--surface);border-radius:var(--radius);padding:clamp(12px,1.5vw,20px);display:flex;flex-direction:row;align-items:center;gap:clamp(10px,1vw,16px);box-shadow:var(--shadow);text-decoration:none;color:inherit;transition:all .5s cubic-bezier(.16,1,.3,1);position:relative;border:1px solid var(--border);opacity:0;transform:translateY(30px) scale(.97);animation:cardAppear .7s cubic-bezier(.16,1,.3,1) forwards;will-change:transform,opacity;overflow:hidden}
+.app-card::before{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,transparent 60%,rgba(0,242,255,.06));opacity:0;transition:opacity .5s ease}
+.app-card:hover::before{opacity:1}
+.app-card:active{transform:scale(.97)!important}
+@keyframes cardAppear{to{opacity:1;transform:translateY(0) scale(1)}}
+.app-card:hover{transform:translateY(-8px);border-color:rgba(0,242,255,.3);box-shadow:0 30px 60px rgba(0,0,0,.8),0 0 40px rgba(0,242,255,.08)}
+.app-icon{width:clamp(56px,7vw,80px);height:clamp(56px,7vw,80px);border-radius:var(--radius-sm);object-fit:cover;box-shadow:0 12px 24px rgba(0,0,0,.5);background:#1c1c21;padding:2px;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.app-card:hover .app-icon{transform:scale(1.06) rotate(-2deg)}
+.app-info{flex:1;min-width:0;width:100%}
+.app-info h2{font-size:clamp(14px,1.3vw,18px);font-weight:700;margin-bottom:2px;letter-spacing:-.3px}
+.cat{font-size:clamp(10px,.8vw,12px);color:var(--sub);margin-bottom:clamp(8px,.8vw,12px);font-weight:600;text-transform:uppercase;letter-spacing:.5px;opacity:.8}
+.btn-dl{background:linear-gradient(135deg,#00f2ff,#0066ff);color:#000;padding:clamp(7px,1vw,10px) clamp(16px,2vw,24px);border-radius:100px;font-size:clamp(11px,.9vw,13px);font-weight:800;display:inline-block;transition:all .4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+.btn-dl::after{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.2),transparent);opacity:0;transition:opacity .3s}
+.app-card:hover .btn-dl{transform:scale(1.05);box-shadow:0 12px 28px rgba(0,242,255,.35)}
+.app-card:hover .btn-dl::after{opacity:1}
+.tag{position:absolute;top:clamp(8px,1vw,12px);right:clamp(8px,1vw,12px);font-size:clamp(8px,.7vw,10px);font-weight:900;padding:clamp(3px,.4vw,5px) clamp(8px,1vw,12px);border-radius:8px;text-transform:uppercase;letter-spacing:.5px;pointer-events:none;z-index:1;backdrop-filter:blur(4px)}
+.tag.premium{background:rgba(250,204,21,.12);color:var(--premium);border:1px solid rgba(250,204,21,.2)}
+.tag.beta{background:rgba(168,85,247,.12);color:var(--beta);border:1px solid rgba(168,85,247,.2)}
+.tag.nuevo{background:rgba(0,242,255,.12);color:var(--accent);border:1px solid rgba(0,242,255,.2)}
+.search-btn{width:40px;height:40px;background:linear-gradient(135deg,#00f2ff,#0066ff);border-radius:14px;box-shadow:0 0 20px rgba(0,242,255,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .4s cubic-bezier(.16,1,.3,1);flex-shrink:0}
+.search-btn:hover{transform:scale(1.08);box-shadow:0 0 30px rgba(0,242,255,0.5)}
+.search-btn:active{transform:scale(.92)}
+.search-bar{width:calc(100% - clamp(24px,8vw,64px));max-width:1350px;margin:-4px auto 12px;padding:clamp(12px,1.2vw,16px) clamp(16px,2vw,24px);display:block;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:clamp(14px,1.1vw,17px);font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:all .5s cubic-bezier(.16,1,.3,1);opacity:0;transform:translateY(-16px) scale(.97);pointer-events:none}
+.search-bar.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.search-bar:focus{border-color:var(--accent);box-shadow:0 0 40px rgba(0,242,255,.15),0 0 0 1px rgba(0,242,255,.2)}
+.search-bar::placeholder{color:var(--sub)}
+.app-card.hidden{display:none}
+#no-results{grid-column:1/-1;text-align:center;color:var(--sub);font-size:clamp(14px,1.2vw,17px);padding:clamp(30px,5vw,60px) 0;animation:fadeIn .5s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:901px){main{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}}
+@media(min-width:1201px){main{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:900px){main{grid-template-columns:repeat(auto-fill,minmax(165px,1fr))}.app-card{flex-direction:column;text-align:center;border-radius:20px;padding:14px}.app-icon{width:60px;height:60px}.tag{top:10px;right:10px}}
+@media(max-width:600px){nav{padding:14px 16px}main{grid-template-columns:repeat(2,1fr);padding:6px 12px;gap:10px}.app-card{border-radius:18px;padding:12px 10px;gap:8px}.app-icon{width:52px;height:52px;border-radius:14px}.app-info h2{font-size:13px}.cat{font-size:9px;margin-bottom:6px}.btn-dl{padding:6px 14px;font-size:10px}.tag{font-size:7px;padding:2px 7px;top:8px;right:8px;border-radius:6px}header{padding:14px 16px 8px}header h1{font-size:24px}.search-bar{width:calc(100% - 32px);margin:-2px auto 10px;padding:12px 16px;font-size:14px}}
+@media(max-width:400px){main{grid-template-columns:1fr 1fr;gap:8px}.app-card{border-radius:16px;padding:10px 8px}.app-icon{width:44px;height:44px}.app-info h2{font-size:12px}.btn-dl{padding:5px 10px;font-size:9px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media(hover:none){.app-card:hover{transform:none;border-color:var(--border);box-shadow:var(--shadow)}.app-card:hover .btn-dl{transform:none;box-shadow:none}.app-card:active{transform:scale(.97)!important;border-color:rgba(0,242,255,.2)}}
 </style>
 </head>
 <body>
 <div class="glow-bg"></div>
-<nav><div class="brand">Aura Store</div><div style="width:40px;height:40px;background:linear-gradient(135deg,#00f2ff,#0066ff);border-radius:14px;box-shadow:0 0 20px rgba(0,242,255,0.3)"></div></nav>
+<nav><div class="brand">Aura Store</div><div id="searchBtn" class="search-btn" role="button" aria-label="Buscar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div></nav>
+<input id="searchInput" class="search-bar" type="text" placeholder="Buscar apps..." autocomplete="off">
 <header><h1>Descubrir</h1><p>Apps exclusivas y herramientas premium</p></header>
 <main id="app-grid"></main>
 <script>
@@ -47,15 +72,20 @@ const apps=[
 {n:'Cleaner',c:'Utilidad • v2.0.5',i:'logos/Cleaner.webp',f:'Cleaner.apk',t:'premium'},
 {n:'WhaTup',c:'Social • v1.8.0',i:'logos/Whatup.webp',f:'WhaTup.apk',t:'beta'},
 {n:'Wallpapers',c:'Diseño • v11.18',i:'logos/Wallpaper.webp',f:'Wallpaper.apk',t:'premium'},
-{n:'TubePlus',c:'Media • v1.30.0',i:'logos/TubePlus.webp',f:'TubePlus.apk',t:'nuevo'}
+{n:'TubePlus',c:'Media • v1.30.0',i:'logos/TubePlus.webp',f:'TubePlus.apk',t:'nuevo'},
+{n:'Diana',c:'Inteligencia Artificial • v1.0.0',i:'logos/Diana.webp',f:'Diana.apk',t:'nuevo'},
+{n:'LocalKey',c:'Seguridad • v1.0.0',i:'logos/LocalKey.webp',f:'LocalKey.apk',t:'nuevo'}
 ];
 const grid=document.getElementById('app-grid');
-apps.forEach((app,i)=>{
+function renderCards(list){
+grid.innerHTML='';
+list.forEach((app,i)=>{
 const card=document.createElement('a');
 card.href=app.f;
 card.className='app-card';
-card.style.animationDelay=`${i*0.12}s`;
+card.style.animationDelay=`${i*0.08}s`;
 card.setAttribute('download','');
+card.dataset.name=app.n.toLowerCase();
 card.innerHTML=`
 <span class="tag ${app.t}">${app.t}</span>
 <img class="app-icon" src="${app.i}" alt="${app.n}" onerror="this.src='https://ui-avatars.com/api/?name=${app.n}&background=121216&color=00f2ff'">
@@ -65,6 +95,32 @@ card.innerHTML=`
 <div class="btn-dl">DESCARGAR</div>
 </div>`;
 grid.appendChild(card);
+});
+}
+renderCards(apps);
+const searchInput=document.getElementById('searchInput');
+const searchBtn=document.getElementById('searchBtn');
+searchBtn.addEventListener('click',()=>{
+searchInput.classList.toggle('show');
+if(searchInput.classList.contains('show')){searchInput.focus()}
+});
+searchInput.addEventListener('input',()=>{
+const q=searchInput.value.toLowerCase().trim();
+document.querySelectorAll('.app-card').forEach(c=>{
+const match=c.dataset.name.includes(q)||c.querySelector('.cat').textContent.toLowerCase().includes(q);
+c.classList.toggle('hidden',!match);
+});
+const visible=document.querySelectorAll('.app-card:not(.hidden)').length;
+if(!visible&&q){
+const msg=document.getElementById('no-results')||document.createElement('p');
+msg.id='no-results';
+msg.textContent=`Sin resultados para "${searchInput.value}"`;
+msg.style.cssText='grid-column:1/-1;text-align:center;color:var(--sub);font-size:15px;padding:40px 0';
+if(!document.getElementById('no-results'))grid.appendChild(msg);
+}else{
+const msg=document.getElementById('no-results');
+if(msg)msg.remove();
+}
 });
 document.addEventListener('contextmenu',e=>e.preventDefault());
 </script>
