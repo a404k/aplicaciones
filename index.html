@@ -3,526 +3,548 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#050505">
+<meta name="theme-color" content="#cce3ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Aura Store</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-    :root {
-        --bg: #030305;
-        --surface: rgba(20, 20, 25, 0.4);
-        --surface-hover: rgba(30, 30, 40, 0.6);
-        --accent: #00f2ff;
-        --accent-glow: rgba(0, 242, 255, 0.4);
-        --premium: #facc15;
-        --beta: #a855f7;
-        --text: #ffffff;
-        --sub: #94a3b8;
-        --border: rgba(255, 255, 255, 0.08);
-        --border-hover: rgba(255, 255, 255, 0.2);
-        --radius-lg: 28px;
-        --radius-md: 20px;
-        --radius-sm: 14px;
-    }
+:root {
+  /* Paleta iOS Celeste Cristal Líquido */
+  --bg-base: #0f101d;
+  --glass-crystal: rgba(225, 244, 255, 0.28);
+  --glass-nav: rgba(235, 248, 255, 0.42);
+  --glass-island: rgba(10, 15, 30, 0.75);
+  
+  --sky:      #e0f2fe;
+  --sky-deep: #38bdf8;
+  --blue-apple:#0071e3; /* Azul oficial de Apple */
+  --text:     #050b14;
+  --sub:      #334155;
+  
+  /* Bordes de Refracción de Luz (Specular Highlighting) */
+  --gborder:  rgba(255, 255, 255, 0.65);
+  --gborder-sub: rgba(255, 255, 255, 0.3);
+  --gborder-dark: rgba(255, 255, 255, 0.12);
+  
+  /* Sombras de profundidad nativa */
+  --shadow-flat: rgba(0, 0, 0, 0.04);
+  --shadow-iso: rgba(8, 14, 36, 0.22);
+  --shadow-island: rgba(0, 0, 0, 0.35);
+  
+  /* Configuración de curvas Apple (Squircle feeling) */
+  --r-ios:    28px;
+  --r-icon:   20px;
+  --r-pill:   50px;
+  
+  /* Elasticidad iOS (Spring physics simulation) */
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --blur: blur(35px) saturate(230%);
+}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    html { scroll-behavior: smooth; }
-    
-    body {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        background-color: var(--bg);
-        color: var(--text);
-        overflow-x: hidden;
-        min-height: 100vh;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        position: relative;
-    }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
 
-    /* Fondo dinámico animado */
-    .ambient-bg {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        overflow: hidden;
-        background: radial-gradient(circle at 15% 50%, rgba(168, 85, 247, 0.08), transparent 50%),
-                    radial-gradient(circle at 85% 30%, rgba(0, 242, 255, 0.08), transparent 50%);
-    }
-    .ambient-bg::before, .ambient-bg::after {
-        content: '';
-        position: absolute;
-        width: 60vmax;
-        height: 60vmax;
-        border-radius: 50%;
-        filter: blur(80px);
-        opacity: 0.5;
-        animation: float 20s infinite alternate ease-in-out;
-    }
-    .ambient-bg::before {
-        top: -20%; left: -10%;
-        background: radial-gradient(circle, rgba(0, 242, 255, 0.1) 0%, transparent 70%);
-    }
-    .ambient-bg::after {
-        bottom: -20%; right: -10%;
-        background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
-        animation-delay: -10s;
-    }
+body{
+  font-family:'Figtree',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background: var(--bg-base);
+  color:var(--text);
+  overflow-x:hidden;
+  min-height:100dvh;
+  -webkit-font-smoothing:antialiased;
+}
 
-    @keyframes float {
-        0% { transform: translate(0, 0) scale(1); }
-        100% { transform: translate(10%, 15%) scale(1.2); }
-    }
+/* Esferas orgánicas dinámicas en movimiento continuo de fondo (Imagen de referencia) */
+.bg-blobs {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+}
+.blob {
+  position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.65;
+}
+.blob-1 {
+  top: -10%; left: -10%; width: 65vw; height: 65vw; 
+  background: radial-gradient(circle, #b490ff 0%, #7c3aed 100%);
+  animation: floatOrb 22s infinite alternate ease-in-out;
+}
+.blob-2 {
+  bottom: -15%; right: -10%; width: 70vw; height: 70vw; 
+  background: radial-gradient(circle, #7dd3fc 0%, #0284c7 100%);
+  animation: floatOrb 28s infinite alternate-reverse ease-in-out;
+}
+.blob-3 {
+  top: 35%; right: -20%; width: 50vw; height: 50vw; 
+  background: radial-gradient(circle, #f472b6 0%, #db2777 100%);
+  animation: floatOrb 18s infinite alternate ease-in-out;
+}
+.blob-4 {
+  bottom: 20%; left: -15%; width: 55vw; height: 55vw; 
+  background: radial-gradient(circle, #ffffff 0%, #e0f2fe 100%);
+  opacity: 0.45;
+  animation: floatOrb 25s infinite alternate-reverse ease-in-out;
+}
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(8%, 12%) scale(1.12); }
+}
 
-    /* Navegación Glassmorfismo */
-    nav {
-        position: sticky;
-        top: 0;
-        background: rgba(3, 3, 5, 0.6);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        z-index: 100;
-        padding: 16px clamp(20px, 5vw, 40px);
-        border-bottom: 1px solid var(--border);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: all 0.3s ease;
-    }
+/* Barra de Navegación Estilo iOS Glass */
+nav{
+  position:sticky; top:0; z-index:200;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 24px;
+  padding-top:env(safe-area-inset-top);
+  height:calc(64px + env(safe-area-inset-top));
+  background: var(--glass-nav);
+  backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  border-bottom:1px solid var(--gborder);
+  box-shadow: 0 4px 30px var(--shadow-flat);
+}
 
-    .brand {
-        font-weight: 800;
-        font-size: clamp(22px, 3vw, 28px);
-        letter-spacing: -1px;
-        background: linear-gradient(to right, #fff, var(--accent), #fff);
-        background-size: 200% auto;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: shine 4s linear infinite;
-    }
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:inherit;z-index:10;}
+.logo-mark{
+  width:34px;height:34px;border-radius:11px;flex-shrink:0;
+  background: linear-gradient(135deg, #0071e3, #38bdf8);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow: 0 6px 16px rgba(0,113,227,0.35), inset 0 1px 1px rgba(255,255,255,0.7);
+}
+.logo-mark svg{width:16px;height:16px;}
+.logo-name{font-weight:800;font-size:20px;letter-spacing:-0.6px;color:var(--text);}
 
-    @keyframes shine { to { background-position: 200% center; } }
+/* Concepto de Isla Dinámica para la interfaz de búsqueda */
+.island-search-container {
+  display: flex; align-items: center; justify-content: flex-end; position: relative;
+}
+#sBtn {
+  width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--gborder);
+  background: rgba(255, 255, 255, 0.35); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text); z-index: 15; transition: all 0.4s var(--spring);
+  box-shadow: 0 4px 14px var(--shadow-flat);
+}
+#sBtn:active { transform: scale(0.86); }
+#sInp {
+  position: absolute; right: 0; top: -2px; width: 40px; height: 44px; opacity: 0; pointer-events: none;
+  background: var(--glass-island); border: 1px solid var(--gborder-dark);
+  border-radius: var(--r-pill); padding: 0 46px 0 20px; color: #fff;
+  font-family: inherit; font-size: 15px; font-weight: 500; outline: none;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 12px 34px var(--shadow-island);
+  transition: width 0.45s var(--spring), opacity 0.3s ease, border-radius 0.45s var(--spring);
+  z-index: 12;
+}
+#sInp::placeholder { color: rgba(255,255,255,0.45); }
+#sInp.open {
+  width: min(290px, 65vw); opacity: 1; pointer-events: all; border-radius: 20px;
+}
 
-    /* Buscador interactivo */
-    .search-container {
-        display: flex;
-        align-items: center;
-        position: relative;
-    }
+/* Hero e Identidad Visual iOS */
+.hero{
+  position:relative; z-index:10; padding:48px 24px 36px;
+}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:11px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase;
+  color: var(--blue-apple); margin-bottom:16px;
+  background: rgba(255,255,255,0.45); padding: 5px 14px; border-radius: var(--r-pill);
+  border: 1px solid var(--gborder-sub);
+}
+.eyebrow-dot{
+  width:8px; height:8px; border-radius:50%; background:var(--blue-apple);
+  box-shadow: 0 0 10px var(--sky-deep); animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.4;transform:scale(0.85);} }
 
-    .search-bar {
-        width: 0;
-        opacity: 0;
-        padding: 0;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid transparent;
-        border-radius: 100px;
-        color: var(--text);
-        font-family: inherit;
-        font-size: 15px;
-        outline: none;
-        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        position: absolute;
-        right: 50px;
-        backdrop-filter: blur(10px);
-    }
+.hero h1{
+  font-weight:900; font-size:clamp(40px, 10vw, 64px);
+  line-height:1.02; letter-spacing:-2.8px; color:var(--text); margin-bottom:14px;
+}
+.hero h1 span{
+  background: linear-gradient(135deg, #0056b3 0%, #3a00b3 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-sub{
+  font-size:16px; font-weight:500; line-height:1.55; color:var(--sub); max-width:320px; margin-bottom:32px;
+}
 
-    .search-bar.show {
-        width: clamp(200px, 40vw, 400px);
-        opacity: 1;
-        padding: 10px 20px;
-        border-color: var(--accent-glow);
-        box-shadow: 0 0 20px rgba(0, 242, 255, 0.1);
-    }
-    
-    .search-bar::placeholder { color: var(--sub); }
-    .search-bar:focus { border-color: var(--accent); background: rgba(255, 255, 255, 0.05); }
+.metrics{
+  display:flex; background: var(--glass-crystal); border: 1px solid var(--gborder);
+  border-radius:22px; overflow:hidden;
+  backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  box-shadow: 0 16px 36px var(--shadow-iso), inset 0 1px 3px rgba(255,255,255,0.4);
+  max-width:340px; transform: rotateX(8deg) rotateY(-6deg); transform-style: preserve-3d;
+}
+.m{flex:1; padding:18px 10px; text-align:center; position:relative;}
+.m+.m::before{content:''; position:absolute; left:0; top:22%; height:56%; width:1px; background:var(--gborder-sub);}
+.mv{font-size:22px; font-weight:900; letter-spacing:-0.5px; line-height:1; margin-bottom:4px; color: var(--text);}
+.ml{font-size:10px; font-weight:700; letter-spacing:1px; color:var(--sub); text-transform:uppercase;}
 
-    .search-btn {
-        width: 44px;
-        height: 44px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid var(--border);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        color: white;
-        z-index: 2;
-    }
+.sec{position:relative; z-index:10; padding:16px 24px 14px;}
+.sec-t{font-size:22px; font-weight:900; letter-spacing:-0.6px; color:var(--text);}
 
-    .search-btn:hover {
-        background: var(--text);
-        color: var(--bg);
-        transform: scale(1.05);
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-    }
+/* Segmented Control Oficial de iOS (Sliding Pill Capsule Track) */
+.segmented-control-container {
+  position: relative; z-index: 10; margin: 0 24px 28px;
+  background: rgba(255, 255, 255, 0.35); border: 1px solid var(--gborder-sub);
+  padding: 3px; border-radius: 14px; display: flex; position: relative;
+  backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.02), 0 4px 14px var(--shadow-flat);
+}
+.tab-slider {
+  position: absolute; top: 3px; bottom: 3px; left: 3px;
+  background: rgba(255, 255, 255, 0.85); border-radius: 11px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
+  border: 0.5px solid rgba(255,255,255,0.8);
+  transition: all 0.38s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 1; pointer-events: none;
+}
+.tab {
+  flex: 1; text-align: center; padding: 8px 0; font-size: 13.5px; font-weight: 700;
+  color: var(--sub); cursor: pointer; user-select: none; z-index: 2; position: relative;
+  transition: color 0.3s; white-space: nowrap;
+}
+.tab.on { color: var(--text); }
 
-    /* Cabecera */
-    header {
-        padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 40px) clamp(20px, 4vw, 40px);
-        max-width: 1400px;
-        margin: 0 auto;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+/* Grid Isométrico Flotante */
+.grid {
+  position:relative; z-index:10;
+  display:grid; grid-template-columns: 1fr 1fr; gap:16px;
+  padding:0 20px calc(64px + env(safe-area-inset-bottom));
+  perspective: 1200px;
+}
+@media(min-width:480px){.grid{grid-template-columns:repeat(3,1fr);}}
+@media(min-width:768px){.grid{grid-template-columns:repeat(4,1fr); padding:0 32px calc(72px + env(safe-area-inset-bottom));}}
 
-    .badge {
-        background: rgba(0, 242, 255, 0.1);
-        border: 1px solid var(--accent-glow);
-        color: var(--accent);
-        padding: 6px 16px;
-        border-radius: 100px;
-        font-size: 13px;
-        font-weight: 700;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin-bottom: 20px;
-        display: inline-block;
-        animation: pulse 2s infinite alternate;
-    }
+/* Tarjeta Macro-Glassmorphism con sub-capas en 3D (Preserve-3D) */
+.card {
+  position:relative; border-radius: var(--r-ios);
+  background: var(--glass-crystal); border:1px solid var(--gborder);
+  backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  padding:26px 16px 20px;
+  display:flex; flex-direction:column; align-items:center;
+  text-decoration:none; color:inherit; cursor:pointer;
+  box-shadow: 0 12px 34px var(--shadow-iso), inset 0 1px 3px rgba(255,255,255,0.5);
+  opacity:0;
+  
+  /* Angulación isométrica nativa de inicio */
+  transform: translateY(40px) rotateX(12deg) rotateY(-6deg);
+  transform-style: preserve-3d; /* Permite capas con elevación Z real */
+  animation: fadeUpIso 0.75s var(--spring) forwards;
+  
+  transition: transform 0.4s var(--spring), background 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
 
-    @keyframes pulse {
-        0% { box-shadow: 0 0 0 0 rgba(0, 242, 255, 0.4); }
-        100% { box-shadow: 0 0 15px 0 rgba(0, 242, 255, 0.1); }
-    }
+@keyframes fadeUpIso {
+  to { opacity:1; transform: translateY(0) rotateX(5deg) rotateY(-3deg); }
+}
 
-    header h1 {
-        font-size: clamp(36px, 6vw, 72px);
-        font-weight: 800;
-        letter-spacing: -2px;
-        line-height: 1.1;
-        margin-bottom: 12px;
-    }
+@media(hover:hover){
+  .card:hover {
+    transform: translateY(-12px) rotateX(-2deg) rotateY(2deg) scale(1.03);
+    background: rgba(255, 255, 255, 0.48);
+    border-color: rgba(255,255,255,0.95);
+    box-shadow: 0 28px 56px rgba(8, 14, 36, 0.28), inset 0 1px 4px rgba(255,255,255,0.7);
+  }
+}
+@media(hover:none){
+  .card:active {
+    transform: scale(0.93) rotateX(0deg) rotateY(0deg);
+    background: rgba(255, 255, 255, 0.55);
+  }
+}
 
-    header p {
-        color: var(--sub);
-        font-size: clamp(16px, 1.5vw, 20px);
-        font-weight: 400;
-        max-width: 500px;
-        line-height: 1.5;
-    }
+/* Chip Flotante */
+.chip{
+  position:absolute; top:12px; right:12px;
+  font-size:8.5px; font-weight:900; letter-spacing:0.8px; text-transform:uppercase;
+  padding:4px 10px; border-radius: var(--r-pill); transform: translateZ(24px);
+}
+.cp{background:rgba(234,88,12,0.14); color:#ea580c; border:1px solid rgba(234,88,12,0.3);}
+.cb{background:rgba(124,58,237,0.14); color:#7c3aed; border:1px solid rgba(124,58,237,0.3);}
+.cn{background:rgba(5,150,105,0.14); color:#059669; border:1px solid rgba(5,150,105,0.3);}
 
-    /* Grid de Apps */
-    main {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 0 clamp(20px, 5vw, 40px) 60px;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: clamp(16px, 2vw, 24px);
-    }
+/* Efecto Pop de ícono flotante de iOS */
+.icon-wrap{position:relative; width:78px; height:78px; margin-bottom:16px; transform-style: preserve-3d;}
+.icon-glow{
+  position:absolute; inset:-12px; border-radius:26px;
+  opacity:0.15; filter:blur(14px); transition:opacity 0.4s, transform 0.4s var(--spring);
+  transform: translateZ(-5px);
+}
+.card:hover .icon-glow{opacity:0.65; transform: scale(1.12) translateZ(-2px);}
+.gp{background:#ea580c;}
+.gb{background:#7c3aed;}
+.gn{background:#059669;}
 
-    /* Efecto Hover Inteligente (Spotlight) */
-    #app-grid:hover > .app-card::after {
-        opacity: 1;
-    }
+.app-icon{
+  width:78px; height:78px; border-radius: var(--r-icon);
+  object-fit:cover; background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  display:block; position:relative; z-index:1;
+  box-shadow: 0 8px 22px rgba(8,20,50,0.14), inset 0 1px 2px rgba(255,255,255,0.7);
+  transition: transform 0.4s var(--spring);
+  transform: translateZ(16px); /* Eleva el ícono sobre la tarjeta en 3D */
+}
+.card:hover .app-icon {
+  transform: translateZ(32px) scale(1.08); /* Despegue 3D masivo al pasar el mouse */
+}
 
-    .app-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-lg);
-        padding: 20px;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        text-decoration: none;
-        color: inherit;
-        position: relative;
-        overflow: hidden;
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
-        
-        /* Variables para el spotlight */
-        --mouse-x: 50%;
-        --mouse-y: 50%;
-        
-        opacity: 0;
-        transform: translateY(20px);
-        animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
+.app-name{
+  font-size:15.5px; font-weight:800; letter-spacing:-0.4px; text-align:center; margin-bottom:4px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%; color:#090f1d;
+  transform: translateZ(12px);
+}
+.app-cat{
+  font-size:12px; font-weight:500; color:var(--sub); text-align:center; margin-bottom:16px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;
+  transform: translateZ(10px);
+}
 
-    @keyframes slideUp {
-        to { opacity: 1; transform: translateY(0); }
-    }
+/* Botón Cápsula Apple */
+.btn{
+  width:100%; padding:11px 0; border-radius: var(--r-pill);
+  font-family:inherit; font-size:13px; font-weight:800;
+  border:1px solid var(--gborder);
+  background: rgba(255,255,255,0.4); color: var(--blue-apple); cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:6px;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px var(--shadow-flat), inset 0 1px 1px rgba(255,255,255,0.6);
+  position:relative; overflow:hidden;
+  transform: translateZ(15px);
+  transition: all 0.35s var(--spring);
+}
+.btn::after{
+  content:''; position:absolute; top:0; left:-80%; width:50%; height:100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  transition: left 0.65s cubic-bezier(0.25, 1, 0.5, 1); pointer-events:none;
+}
+.card:hover .btn::after{ left:140%; }
+.card:hover .btn{
+  background: var(--blue-apple); color:#fff; border-color: transparent;
+  box-shadow: 0 8px 22px rgba(0,113,227,0.4); transform: translateZ(24px);
+}
 
-    /* Borde luminoso interactivo (Spotlight) */
-    .app-card::before, .app-card::after {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        border-radius: inherit;
-        transition: opacity 0.4s ease;
-        pointer-events: none;
-    }
+.nores{
+  grid-column:1/-1; padding:75px 20px; text-align:center;
+  color:var(--sub); font-size:16px; font-weight: 500;
+  display:flex; flex-direction:column; align-items:center; gap:14px;
+  animation: fadeUpIso 0.4s ease forwards;
+}
 
-    .app-card::before {
-        background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%);
-        z-index: 1;
-        opacity: 0;
-    }
-    
-    .app-card:hover::before { opacity: 1; }
-    .app-card:hover { 
-        transform: translateY(-4px); 
-        border-color: var(--border-hover);
-        background: var(--surface-hover);
-    }
+/* Alerta Toast translúcida estilo iOS */
+#toast{
+  position:fixed; bottom:calc(26px + env(safe-area-inset-bottom));
+  left:50%; transform: translateX(-50%) translateY(90px);
+  z-index:999; background: rgba(255, 255, 255, 0.55); border: 1px solid var(--gborder);
+  backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  border-radius: var(--r-pill); padding: 13px 26px;
+  display:flex; align-items:center; gap:10px;
+  font-size:14.5px; font-weight:700; color:var(--text);
+  white-space:nowrap;
+  box-shadow: 0 18px 45px rgba(5, 10, 30, 0.22), inset 0 1px 2px rgba(255,255,255,0.5);
+  transition: transform 0.5s var(--spring), opacity 0.3s ease;
+  opacity:0;
+}
+#toast.show{ transform: translateX(-50%) translateY(0); opacity:1; }
+.td{ width:8px; height:8px; border-radius:50%; background:#10b981; box-shadow: 0 0 10px #34d399; animation: blink 1s ease-in-out infinite; }
 
-    .app-icon {
-        width: 72px;
-        height: 72px;
-        border-radius: var(--radius-md);
-        object-fit: cover;
-        background: #1c1c21;
-        padding: 2px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.1);
-        z-index: 2;
-        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .app-card:hover .app-icon { transform: scale(1.05) rotate(-3deg); }
-
-    .app-info {
-        flex: 1;
-        min-width: 0;
-        z-index: 2;
-    }
-
-    .app-info h2 {
-        font-size: 18px;
-        font-weight: 700;
-        margin-bottom: 4px;
-        letter-spacing: -0.5px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .cat {
-        font-size: 12px;
-        color: var(--sub);
-        margin-bottom: 12px;
-        font-weight: 500;
-        display: block;
-    }
-
-    .btn-dl {
-        background: rgba(255, 255, 255, 0.05);
-        color: var(--text);
-        padding: 8px 20px;
-        border-radius: 100px;
-        font-size: 12px;
-        font-weight: 700;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-        border: 1px solid var(--border);
-    }
-
-    .app-card:hover .btn-dl {
-        background: var(--text);
-        color: var(--bg);
-        border-color: var(--text);
-    }
-
-    .tag {
-        position: absolute;
-        top: 0;
-        right: 0;
-        font-size: 10px;
-        font-weight: 800;
-        padding: 6px 16px;
-        border-bottom-left-radius: var(--radius-sm);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        z-index: 3;
-        backdrop-filter: blur(8px);
-    }
-
-    .tag.premium { background: rgba(250, 204, 21, 0.15); color: var(--premium); border-left: 1px solid rgba(250, 204, 21, 0.3); border-bottom: 1px solid rgba(250, 204, 21, 0.3); }
-    .tag.beta { background: rgba(168, 85, 247, 0.15); color: var(--beta); border-left: 1px solid rgba(168, 85, 247, 0.3); border-bottom: 1px solid rgba(168, 85, 247, 0.3); }
-    .tag.nuevo { background: rgba(0, 242, 255, 0.15); color: var(--accent); border-left: 1px solid rgba(0, 242, 255, 0.3); border-bottom: 1px solid rgba(0, 242, 255, 0.3); }
-
-    .app-card.hidden { display: none; }
-    
-    #no-results {
-        grid-column: 1 / -1;
-        text-align: center;
-        color: var(--sub);
-        font-size: 16px;
-        padding: 60px 0;
-        animation: slideUp 0.4s ease;
-    }
-
-    /* Optimizaciones Mobile */
-    @media (max-width: 768px) {
-        main {
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 12px;
-            padding: 0 16px 40px;
-        }
-        
-        .app-card {
-            flex-direction: column;
-            text-align: center;
-            padding: 24px 16px 16px;
-            border-radius: var(--radius-md);
-        }
-
-        .tag {
-            border-bottom-left-radius: 0;
-            width: 100%;
-            text-align: center;
-            padding: 4px;
-            font-size: 9px;
-        }
-
-        .app-icon { width: 64px; height: 64px; margin-top: 8px; }
-        .app-info h2 { font-size: 16px; }
-        .btn-dl { width: 100%; padding: 10px 0; }
-        
-        .search-bar.show {
-            width: calc(100vw - 110px);
-        }
-    }
-
-    @media (hover: none) {
-        .app-card::before { display: none; }
-        .app-card:active { transform: scale(0.96); background: var(--surface-hover); }
-    }
+footer{ position:relative; z-index:10; text-align:center; padding:20px 20px calc(36px + env(safe-area-inset-bottom)); }
+.f-inner{ border-top: 1px solid var(--gborder-sub); padding-top:26px; display:flex; flex-direction:column; align-items:center; gap:6px; }
+.f-logo{ font-size:14.5px; font-weight:800; color:var(--sub); letter-spacing:-0.2px; }
+.f-copy{ font-size:12px; color:rgba(5, 11, 22, 0.35); font-weight:500; }
 </style>
 </head>
 <body>
 
-<div class="ambient-bg"></div>
+<div class="bg-blobs">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
+</div>
 
 <nav>
-    <div class="brand">Aura Store</div>
-    <div class="search-container">
-        <input id="searchInput" class="search-bar" type="text" placeholder="Buscar aplicaciones..." autocomplete="off">
-        <button id="searchBtn" class="search-btn" aria-label="Buscar">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            </svg>
-        </button>
+  <div class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 3l2.2 6.6H21l-5.6 4.1 2.1 6.6L12 16.2l-5.5 4.1 2.1-6.6L3 9.6h6.8Z" fill="white"/>
+      </svg>
     </div>
+    <span class="logo-name">Aura Store</span>
+  </div>
+  <div class="island-search-container">
+    <input id="sInp" type="text" placeholder="Buscar software…" autocomplete="off" inputmode="search">
+    <button id="sBtn" aria-label="Buscar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </button>
+  </div>
 </nav>
 
-<header>
-    <div class="badge">Aura Premium</div>
-    <h1>Descubre el <br>Siguiente Nivel</h1>
-    <p>Explora un ecosistema seleccionado de herramientas exclusivas y aplicaciones diseñadas para potenciar tu día a día.</p>
-</header>
+<section class="hero">
+  <div class="eyebrow"><span class="eyebrow-dot"></span>Aura Ecosystem</div>
+  <h1>El mejor software,<br><span>listo para vos.</span></h1>
+  <p class="hero-sub">Descargá directo y sin rodeos. Una experiencia de cristal fluida e instantánea.</p>
+  <div class="metrics">
+    <div class="m"><div class="mv" id="cnt">6</div><div class="ml">Apps</div></div>
+    <div class="m"><div class="mv" style="color:#059669;">Free</div><div class="ml">Precio</div></div>
+    <div class="m"><div class="mv" style="color:#ea580c;">4.9★</div><div class="ml">Rating</div></div>
+  </div>
+</section>
 
-<main id="app-grid"></main>
+<div class="sec">
+  <span class="sec-t">Explorar aplicaciones</span>
+</div>
+
+<!-- Estructura Segmented Control deslizable de iOS -->
+<div class="segmented-control-container" id="tabs">
+  <div class="tab-slider" id="slider"></div>
+  <div class="tab on" data-f="all">Todas</div>
+  <div class="tab" data-f="premium">Premium</div>
+  <div class="tab" data-f="nuevo">Nuevas</div>
+  <div class="tab" data-f="beta">Beta</div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  <div class="f-inner">
+    <div class="f-logo">✦ Aura Store · Crystal Pro</div>
+    <div class="f-copy">Seguridad nativa · Descargas Directas Verificadas</div>
+  </div>
+</footer>
+
+<div id="toast"><span class="td"></span><span id="tmsg"></span></div>
 
 <script>
-    const apps = [
-        {n:'KoKo', c:'Extra • v1.7.117', i:'logos/koko.png', f:'KoKo.apk', t:'premium'},
-        {n:'Camara', c:'Extra • v19.0.1', i:'logos/Camara.png', f:'Camara.apk', t:'nuevo'},
-        {n:'Cleaner', c:'Utilidad • v2.0.5', i:'logos/Cleaner.webp', f:'Cleaner.apk', t:'premium'},
-        {n:'WhaTup', c:'Social • v1.8.0', i:'logos/Whatup.webp', f:'WhaTup.apk', t:'beta'},
-        {n:'Diana', c:'Inteligencia Artificial • v1.0.0', i:'logos/Diana.webp', f:'Diana.apk', t:'nuevo'},
-        {n:'LocalKey', c:'Seguridad • v1.0.0', i:'logos/LocalKey.webp', f:'LocalKey.apk', t:'nuevo'}
-    ];
+const APPS = [
+  {n:'KoKo',     c:'Extra',           v:'v1.7.117', i:'logos/koko.png',      f:'KoKo.apk',      t:'premium'},
+  {n:'Camara',   c:'Fotografía',      v:'v19.0.1',  i:'logos/Camara.png',    f:'Camara.apk',    t:'nuevo'},
+  //{n:'Diana',    c:'Inteligencia IA', v:'v1.0.0',   i:'logos/Diana.webp',    f:'Diana.apk',     t:'nuevo'},
+  {n:'Cleaner',  c:'Utilidad',        v:'v2.0.5',   i:'logos/Cleaner.webp',  f:'Cleaner.apk',   t:'premium'},
+  {n:'WhaTup',   c:'Social',          v:'v1.8.0',   i:'logos/Whatup.webp',   f:'WhaTup.apk',    t:'beta'},
+  //{n:'LocalKey', c:'Seguridad',       v:'v1.0.0',   i:'logos/LocalKey.webp', f:'LocalKey.apk',  t:'nuevo'},
+];
 
-    const grid = document.getElementById('app-grid');
+const CL = {premium:'cp',beta:'cb',nuevo:'cn'};
+const GL = {premium:'gp',beta:'gb',nuevo:'gn'};
+const TL = {premium:'Premium',beta:'Beta',nuevo:'Nuevo'};
 
-    function renderCards(list) {
-        grid.innerHTML = '';
-        list.forEach((app, i) => {
-            const card = document.createElement('a');
-            card.href = app.f;
-            card.className = 'app-card';
-            // Retraso escalonado para la animación de entrada
-            card.style.animationDelay = `${i * 0.08}s`;
-            card.setAttribute('download', '');
-            card.dataset.name = app.n.toLowerCase();
-            card.innerHTML = `
-                <span class="tag ${app.t}">${app.t}</span>
-                <img class="app-icon" src="${app.i}" alt="${app.n}" onerror="this.src='https://ui-avatars.com/api/?name=${app.n}&background=1c1c21&color=ffffff&bold=true'">
-                <div class="app-info">
-                    <h2>${app.n}</h2>
-                    <span class="cat">${app.c}</span>
-                    <div class="btn-dl">Obtener</div>
-                </div>`;
-            grid.appendChild(card);
-        });
-    }
+let filt = 'all', q = '';
 
-    renderCards(apps);
+function mkCard(app, i){
+  const a = document.createElement('a');
+  a.href = app.f; a.download = '';
+  a.className = 'card';
+  a.style.animationDelay = i*0.06+'s';
+  const fb = 'https://ui-avatars.com/api/?name='+encodeURIComponent(app.n)+'&background=e0f2fe&color=0071e3&bold=true&size=120';
+  a.innerHTML =
+    '<span class="chip '+CL[app.t]+'">'+TL[app.t]+'</span>'+
+    '<div class="icon-wrap">'+
+      '<div class="icon-glow '+GL[app.t]+'"></div>'+
+      '<img class="app-icon" src="'+app.i+'" alt="'+app.n+'" onerror="this.onerror=null;this.src=\''+fb+'\'">'+
+    '</div>'+
+    '<div class="app-name">'+app.n+'</div>'+
+    '<div class="app-cat">'+app.c+' · '+app.v+'</div>'+
+    '<button class="btn">'+
+      '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'+
+      'Obtener'+
+    '</button>';
+  a.addEventListener('click', (e)=>{
+    e.preventDefault();
+    toast('Obteniendo '+app.n+' desde Aura Cloud…');
+    setTimeout(() => { window.location.href = app.f; }, 450);
+  });
+  return a;
+}
 
-    // Lógica del buscador interactivo
-    const searchInput = document.getElementById('searchInput');
-    const searchBtn = document.getElementById('searchBtn');
+const grid = document.getElementById('grid');
+const cnt  = document.getElementById('cnt');
 
-    searchBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        searchInput.classList.toggle('show');
-        if (searchInput.classList.contains('show')) {
-            searchInput.focus();
-        } else {
-            searchInput.value = '';
-            searchInput.dispatchEvent(new Event('input'));
-        }
-    });
+function render(){
+  grid.innerHTML = '';
+  const list = APPS.filter(a=>
+    (filt==='all'||a.t===filt) &&
+    (!q || a.n.toLowerCase().includes(q) || a.c.toLowerCase().includes(q))
+  );
+  cnt.textContent = list.length;
+  if(!list.length){
+    const d = document.createElement('div');
+    d.className = 'nores';
+    d.innerHTML = '<svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="rgba(5,11,22,0.3)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>No se encontraron resultados para tu búsqueda</span>';
+    grid.appendChild(d);
+    return;
+  }
+  list.forEach((app,i)=>grid.appendChild(mkCard(app,i)));
+}
 
-    // Cerrar buscador al hacer click fuera
-    document.addEventListener('click', (e) => {
-        if (!searchInput.contains(e.target) && e.target !== searchBtn && !searchBtn.contains(e.target)) {
-            searchInput.classList.remove('show');
-        }
-    });
+render();
 
-    // Filtrado de aplicaciones
-    searchInput.addEventListener('input', () => {
-        const q = searchInput.value.toLowerCase().trim();
-        document.querySelectorAll('.app-card').forEach(c => {
-            const match = c.dataset.name.includes(q) || c.querySelector('.cat').textContent.toLowerCase().includes(q);
-            c.classList.toggle('hidden', !match);
-        });
+// Sistema de cálculo matemático del Segmented Control de iOS
+const tabsContainer = document.getElementById('tabs');
+const slider = document.getElementById('slider');
 
-        const visible = document.querySelectorAll('.app-card:not(.hidden)').length;
-        if (!visible && q) {
-            let msg = document.getElementById('no-results');
-            if (!msg) {
-                msg = document.createElement('div');
-                msg.id = 'no-results';
-                grid.appendChild(msg);
-            }
-            msg.innerHTML = `
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px;">
-                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                </svg>
-                <p>No encontramos nada para "<b>${searchInput.value}</b>"</p>
-            `;
-        } else {
-            const msg = document.getElementById('no-results');
-            if (msg) msg.remove();
-        }
-    });
+function updateTabSlider(activeTab) {
+  const containerRect = tabsContainer.getBoundingClientRect();
+  const tabRect = activeTab.getBoundingClientRect();
+  slider.style.width = tabRect.width + 'px';
+  slider.style.left = (tabRect.left - containerRect.left) + 'px';
+}
 
-    // Efecto Spotlight (Seguimiento del ratón) para tarjetas
-    grid.onmousemove = e => {
-        for(const card of document.getElementsByClassName("app-card")) {
-            const rect = card.getBoundingClientRect(),
-                  x = e.clientX - rect.left,
-                  y = e.clientY - rect.top;
+// Inicializar posición del slider
+setTimeout(() => {
+  const activeTab = tabsContainer.querySelector('.tab.on');
+  if(activeTab) updateTabSlider(activeTab);
+}, 100);
 
-            card.style.setProperty("--mouse-x", `${x}px`);
-            card.style.setProperty("--mouse-y", `${y}px`);
-        };
-    }
+tabsContainer.addEventListener('click', e => {
+  const t = e.target.closest('.tab'); if(!t) return;
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
+  t.classList.add('on');
+  updateTabSlider(t);
+  filt = t.dataset.f;
+  render();
+});
 
-    // Prevenir menú contextual para dar sensación de app nativa
-    document.addEventListener('contextmenu', e => e.preventDefault());
+window.addEventListener('resize', () => {
+  const activeTab = tabsContainer.querySelector('.tab.on');
+  if(activeTab) updateTabSlider(activeTab);
+});
+
+// Mecánica elástica de la Isla Dinámica de Búsqueda
+const sBtn = document.getElementById('sBtn');
+const sInp = document.getElementById('sInp');
+
+sBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  sInp.classList.toggle('open');
+  if(sInp.classList.contains('open')) {
+    sInp.focus();
+    sBtn.style.transform = 'translateX(-4px) scale(0.9)';
+    sBtn.style.color = '#fff';
+  } else {
+    sInp.value = ''; q = ''; sBtn.style.transform = ''; sBtn.style.color = ''; render();
+  }
+});
+
+document.addEventListener('click', e => {
+  if(!e.target.closest('.island-search-container') && sInp.value === '') {
+    sInp.classList.remove('open'); sBtn.style.transform = ''; sBtn.style.color = '';
+  }
+});
+
+sInp.addEventListener('input', () => {
+  q = sInp.value.toLowerCase().trim(); render();
+});
+
+let tt;
+function toast(msg){
+  const el = document.getElementById('toast');
+  document.getElementById('tmsg').textContent = msg;
+  el.classList.add('show'); clearTimeout(tt);
+  tt = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+document.addEventListener('contextmenu', e => e.preventDefault());
 </script>
 </body>
 </html>
